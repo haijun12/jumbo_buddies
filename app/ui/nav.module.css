@@ -1,47 +1,36 @@
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 150px;
-    height: 100vh;
-    background-color: #fff; 
-    color: #000;            
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 2rem;
-  }
-  
-  .navbar-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .navbar-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  
-  .navbar-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none; 
-    color: inherit;        
-    cursor: pointer;
-  }
-  
-  .navbar-item img {
-    width: 50px;           
-    height: 50px;          
-    object-fit: contain;   
-    margin-bottom: 0.5rem;  
-  }
-  
-  
+  position: fixed;   
+  width: 150px;
+  height: 100vh;
+  background-color: #fff;
+  color: #000;            
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.navbar-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navbar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.navbar-item img {
+  height: 75px;
+  margin-bottom: 0.75rem;
+}
