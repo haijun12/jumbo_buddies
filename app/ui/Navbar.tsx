@@ -1,4 +1,10 @@
+"use client";
+import { usePathname } from "next/navigation";
 export default function Navbar() {
+    const pathname = usePathname(); // Get the current route
+
+  // Define public routes where the Navbar should not be displayed
+  const isPublicPage = ["/", "/sign-in", "/sign-up"].includes(pathname);
     return (
       <nav className="navbar">
         <div className="navbar-container">
