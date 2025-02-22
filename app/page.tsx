@@ -1,3 +1,4 @@
+import Link from "next/link"
 export default function Home() {
   return (
     <div
@@ -10,9 +11,9 @@ export default function Home() {
       <p className="text-3xl text-white mb-6">
         Rate Everything & Anything that You've Ever Done, Eaten, Seen, Read, etc.
       </p>
-      <button className="bg-black text-white px-6 py-3 rounded">
+      <Link href="/create" className="bg-black text-white px-6 py-3 rounded">
         START
-      </button>
+      </Link>
     </div>
   );
 }
