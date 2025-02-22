@@ -13,7 +13,7 @@ export const sql = neon(process.env.DATABASE_URL as string);
 // get user first/last name and age
 export async function getUserDetails() {
     try {
-    ensureTables();
+    await ensureTables();
       const userId = await getClerkUserId();
   
       // Fetch the user's details
@@ -38,7 +38,7 @@ export async function getUserDetails() {
 // Add row to Usertable (first time login)
 export async function createUser() {
   try {
-    ensureTables();
+      await await ensureTables();
       const userId = await getClerkUserId();
 
       // Insert user if not exists
@@ -59,7 +59,7 @@ export async function getUserListsWithItemCount() {
       
   
       // Step 1: Check if the user exists
-      ensureTables();
+      await ensureTables();
       validateUserExists();
 
       const userId = await getClerkUserId();
@@ -88,7 +88,7 @@ export async function getUserListsWithItemCount() {
 export async function getEventsInList(listId: number) {
     try {  
       // Step 1: Ensure the user owns the list
-      ensureTables();
+      await ensureTables();
       validateListOwner(listId);
   
       // Step 2: Fetch the events sorted by type (Good -> Ok -> Bad), then by rank
@@ -115,7 +115,7 @@ export async function getEventsInList(listId: number) {
 // Update user
 export async function updateUserDetails(firstName: string, lastName: string, age: number) {
     try {
-        ensureTables();
+        await ensureTables();
       // Ensure the user exists before updating
       validateUserExists();
 
@@ -138,7 +138,7 @@ export async function updateUserDetails(firstName: string, lastName: string, age
 // Add row to UserListTable (user provides only the name)
 export async function createUserList(listName: string) {
   try {
-    ensureTables();
+    await ensureTables();
       const userId = await getClerkUserId();
 
       await sql`
@@ -164,7 +164,7 @@ export async function addRankedEvent(
     try {
 
       // Ensure the user owns the list
-      ensureTables();  
+      await ensureTables();  
       validateListOwner(listId);
   
       let insertRank = rank; // The position determined by frontend pairwise comparison
@@ -214,44 +214,45 @@ async function validateUserExists() {
 }
 
 async function ensureTables() {
-    try {
-        const createUserSchema = sql`CREATE SCHEMA IF NOT EXISTS Users`;
-        const createUserTable = sql`
-            CREATE TABLE IF NOT EXISTS Users.User (
-            id SERIAL PRIMARY KEY
-            first_name TEXT,
-            last_name TEXT,
-            age INTEGER
-        )
-        `
-        const createUserListTable = sql`
-            CREATE TABLE IF NOT EXISTS Users.Lists (
-                id SERIAL PRIMARY KEY,
-                name TEXT NOT NULL,
-                create_date DATE NOT NULL,
-                update_date DATE NOT NULL,
-                user_id INTEGER REFERENCES Users.User(id) ON DELETE CASCADE NOT NULL
-            )
-        `
-        const createUserRatingItemTable = sql`
-            CREATE TABLE IF NOT EXISTS Users.rating_item (
-                id SERIAL PRIMARY KEY,
-                name TEXT NOT NULL,
-                description TEXT,
-                image TEXT, -- a link to the image db
-                rank INTEGER NOT NULL,
-                type ENUM('Bad', 'Ok', 'Good') NOT NULL,
-                list INTEGER REFERENCES Users.Lists(id) ON DELETE CASCADE NOT NULL
-            )
-        `;
-        await Promise.all([
-            createUserSchema,
-            createUserTable,
-            createUserListTable,
-            createUserRatingItemTable,
-        ]);
-    } catch (error) {
-        console.error("Error creating visit database:", error);
-        throw error;
-    }
+  try {
+      // Create schema first
+      await sql`CREATE SCHEMA IF NOT EXISTS Users`;
+      
+      // Create User table
+      await sql`
+          CREATE TABLE IF NOT EXISTS Users.User (
+              id TEXT PRIMARY KEY,
+              first_name TEXT,
+              last_name TEXT,
+              age INTEGER
+          )
+      `;
+      
+      // Create Lists table after User table
+      await sql`
+          CREATE TABLE IF NOT EXISTS Users.Lists (
+              id SERIAL PRIMARY KEY,
+              name TEXT NOT NULL,
+              create_date DATE NOT NULL,
+              update_date DATE NOT NULL,
+              user_id TEXT REFERENCES Users.User(id) ON DELETE CASCADE NOT NULL
+          )
+      `;
+      
+      // Create rating_item table after Lists table
+      await sql`
+          CREATE TABLE IF NOT EXISTS Users.rating_item (
+              id SERIAL PRIMARY KEY,
+              name TEXT NOT NULL,
+              description TEXT,
+              image TEXT,
+              rank INTEGER NOT NULL,
+              type TEXT NOT NULL,
+              list INTEGER REFERENCES Users.Lists(id) ON DELETE CASCADE NOT NULL
+          )
+      `;
+  } catch (error) {
+      console.error("Error creating database tables:", error);
+      throw error;
+  }
 }
