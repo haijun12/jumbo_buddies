@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import EventVotingCard from "../components/EventVotingCard";
+import EventVotingCard from "../ui/EventVotingCard";
 
 export default function Lists() {
   const [showCard, setShowCard] = useState(false);
