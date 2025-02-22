@@ -1,6 +1,7 @@
 "use server";
 import { neon } from '@neondatabase/serverless';
 import { getClerkUserId } from "./auth";
+import {RatingList} from "./types";
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -9,16 +10,35 @@ if (!databaseUrl) {
 }
 export const sql = neon(process.env.DATABASE_URL as string);
 
-// TEST FUNCTION
-export async function getData() {
-    const response = await sql`SELECT version()`;
-    console.log(response);
-    return response[0].version;
-}
+// get user first/last name and age
+export async function getUserDetails() {
+    try {
+    ensureTables();
+      const userId = await getClerkUserId();
+  
+      // Fetch the user's details
+      const userProfile = await sql`
+        SELECT first_name, last_name, age 
+        FROM Users.User 
+        WHERE id = ${userId};
+      `;
+  
+      // If no user found, return null
+      if (userProfile.length === 0) {
+        return { userProfile: null };
+      }
+  
+      return { userProfile: userProfile[0] };
+    } catch (error) {
+      console.error("Error getting user profile:", error);
+      throw error;
+    }
+  }
 
 // Add row to Usertable (first time login)
 export async function createUser() {
   try {
+    ensureTables();
       const userId = await getClerkUserId();
 
       // Insert user if not exists
@@ -35,16 +55,14 @@ export async function createUser() {
 // Does user exist? If so, list their lists and the number of items in that list.
 export async function getUserListsWithItemCount() {
     try {
-      const userId = await getClerkUserId();
+
+      
   
       // Step 1: Check if the user exists
-      const userExists = await sql`
-        SELECT id FROM Users.User WHERE id = ${userId};
-      `;
-  
-      if (userExists.length === 0) {
-        return { exists: false, lists: [] }; // User not found
-      }
+      ensureTables();
+      validateUserExists();
+
+      const userId = await getClerkUserId();
   
       // Step 2: Fetch the user's lists along with item counts
       const userLists = await sql`
@@ -68,17 +86,10 @@ export async function getUserListsWithItemCount() {
 
 // If someone clicks a list, show the contents of that list
 export async function getEventsInList(listId: number) {
-    try {
-      const userId = await getClerkUserId();
-  
+    try {  
       // Step 1: Ensure the user owns the list
-      const listOwner = await sql`
-        SELECT user_id FROM Users.Lists WHERE id = ${listId};
-      `;
-  
-      if (listOwner.length === 0 || listOwner[0].user_id !== userId) {
-        throw new Error("Unauthorized: You do not own this list.");
-      }
+      ensureTables();
+      validateListOwner(listId);
   
       // Step 2: Fetch the events sorted by type (Good -> Ok -> Bad), then by rank
       const events = await sql`
@@ -102,11 +113,32 @@ export async function getEventsInList(listId: number) {
   }
 
 // Update user
+export async function updateUserDetails(firstName: string, lastName: string, age: number) {
+    try {
+        ensureTables();
+      // Ensure the user exists before updating
+      validateUserExists();
 
+      const userId = await getClerkUserId();
+  
+      // Update user details
+      await sql`
+        UPDATE Users.User
+        SET first_name = ${firstName}, last_name = ${lastName}, age = ${age}
+        WHERE id = ${userId};
+      `;
+  
+      return { message: "User details updated successfully." };
+    } catch (error) {
+      console.error("Error updating user details:", error);
+      throw error;
+    }
+  }
 
 // Add row to UserListTable (user provides only the name)
 export async function createUserList(listName: string) {
   try {
+    ensureTables();
       const userId = await getClerkUserId();
 
       await sql`
@@ -126,27 +158,14 @@ export async function addRankedEvent(
     eventName: string,
     description: string,
     image: string,
-    type: "Bad" | "Ok" | "Good",
+    type: RatingList,
     rank: number
   ) {
     try {
-      const userId = await getClerkUserId();
-  
+
       // Ensure the user owns the list
-      const listOwner = await sql`
-        SELECT user_id FROM Users.Lists WHERE id = ${listId};
-      `;
-  
-      if (listOwner.length === 0 || listOwner[0].user_id !== userId) {
-        throw new Error("Unauthorized: You do not own this list.");
-      }
-  
-      // Step 1: Find where the event should be inserted
-      const items = await sql`
-        SELECT id, name, rank FROM Users.rating_item 
-        WHERE list = ${listId} AND type = ${type} 
-        ORDER BY rank ASC;
-      `;
+      ensureTables();  
+      validateListOwner(listId);
   
       let insertRank = rank; // The position determined by frontend pairwise comparison
   
@@ -183,12 +202,26 @@ async function validateListOwner(listId: number) {
       }
 }
 
+async function validateUserExists() {
+    const userId = await getClerkUserId();
+    const userExists = await sql`
+    SELECT id FROM Users.User WHERE id = ${userId};
+  `;
+
+  if (userExists.length === 0) {
+    throw new Error("User does not exist.");
+  }
+}
+
 async function ensureTables() {
     try {
         const createUserSchema = sql`CREATE SCHEMA IF NOT EXISTS Users`;
         const createUserTable = sql`
             CREATE TABLE IF NOT EXISTS Users.User (
             id SERIAL PRIMARY KEY
+            first_name TEXT,
+            last_name TEXT,
+            age INTEGER
         )
         `
         const createUserListTable = sql`
