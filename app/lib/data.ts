@@ -1,5 +1,7 @@
 "use server";
 import { neon } from '@neondatabase/serverless';
+import { getClerkUserId } from "./auth";
+
 const databaseUrl = process.env.DATABASE_URL;
 
 if (!databaseUrl) {
