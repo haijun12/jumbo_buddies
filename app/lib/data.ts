@@ -14,6 +14,10 @@ export async function getData() {
     return response[0].version;
 }
 
+export async function createUser() {
+  await sql("INSERT INTO comments (comment) VALUES ($1)", [comment]);
+}
+
 async function ensureTables() {
     try {
         const createUserSchema = sql`CREATE SCHEMA IF NOT EXISTS Users`;
