@@ -1,27 +1,20 @@
-
-
 import Link from "next/link"
+
 export default function Home() {
-
-
   return (
     <div
       className="min-h-screen flex flex-col justify-center items-center text-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/pictures/homeBackground.png')" }}
     >
-      <h1 className="text-8xl font-bold-alice text-white mb-4">
+      <h1 className="text-8xl font-alice font-bold text-white mb-[50px]">
         DOWN THE RABBIT HOLE
       </h1>
-      <p className="text-3xl text-white mb-6">
+      <p className="text-3xl text-white italic mb-[50px]">
         Rate Everything & Anything that You've Ever Done, Eaten, Seen, Read, etc.
       </p>
-      <Link href="/create"
-        className="bg-black text-white px-6 py-3 rounded"
-      >
+      <Link href="/create" className="text-[32px] bg-black text-white px-[20px] py-[20px]">
         START
       </Link>
-
-      
     </div>
   );
 }

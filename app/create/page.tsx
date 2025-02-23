@@ -13,36 +13,27 @@ export default function Create() {
     }
   };
   return (
-    <div className="flex flex-col h-full w-full">
-      <div className="flex flex-col justify-center items-center h-screen">
-        <button 
-            className={`text-white font-bold my-4 p-4 ${isClicked ? "bg-gray-500" : "bg-black"}`} 
-            onClick={() => setIsClicked(!isClicked)} 
-        >
-            CREATE LIST
-        </button>
-        {isClicked && (
-          <div className="flex flex-row items-center gap-4">
-            <TextField
-              id="outlined-text-input"
-              placeholder="Name the list"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              onFocus={handleFocus}
-              className="w-64"
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 0,  // Removes rounding
-                },
-              }}
-            />
-            <button className="my-3.5 p-3.5 bg-black text-white">
-              <Play className="fill-white" />
-            </button>
-          </div>
-        )}
+    <div className="fixed bottom-[30px] left-1/2 transform -translate-x-1/2">
+      <div className="flex flex-row items-center gap-4">
+        <TextField
+          placeholder="Name the list"
+          value={name} 
+          onChange={(e) => setName(e.target.value)}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: 0,
+              height: '60px',
+              width: '400px',
+              fontStyle: 'italic',
+            },
+          }}
+        />
 
+        <button className="h-[60px] my-[20px] p-[20px] bg-black text-white">
+          CREATE
+        </button>
       </div>
     </div>
+
   );
 }

@@ -8,7 +8,7 @@ export default function Lists() {
   return (
     <>
       <button
-        className="bg-black text-white px-6 py-3 rounded"
+        className="bg-black text-white px-6 py-3"
         onClick={() => setShowCard(true)}
       >
         START
