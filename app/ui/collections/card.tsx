@@ -1,32 +1,45 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import AddNewEventPopup from "./AddNewEvent";
 import EventCard from "./EventCard";
 import Image from "next/image";
 import { Event } from "@/app/lib/types";
+import { deleteItem } from "@/app/lib/api"; // <-- Import your deleteItem function
 
-export default function Card({ id, listName, events }: { id: number, listName: string, events: Event[] }) {
+export default function Card({ id, listName, events }: { id: number; listName: string; events: Event[] }) {
   const [showAddNewEvent, setShowAddNewEvent] = useState(false);
   const [eventsState, setEventsState] = useState<Event[]>(events || []);
 
   // Create a sorted copy of events based on rank.
   const sortedEvents = [...eventsState].sort((a, b) => a.rank - b.rank);
 
+  // Handler to delete an event by name (as your API is set up for name + listId)
+  const handleDeleteEvent = async (itemName: string) => {
+    try {
+      // 1) Remove from database
+      await deleteItem(itemName, id);
+
+      // 2) Remove from local state
+      setEventsState((prevEvents) => prevEvents.filter((ev) => ev.name !== itemName));
+    } catch (err) {
+      console.error("Failed to delete event:", err);
+    }
+  };
+
   return (
     <div className="relative flex flex-col w-full min-h-screen mx-auto pt-16">
-      {/* List Name - Now in normal flow with bottom margin for spacing */}
       <h1 className="text-6xl text-center mt-2 mb-[75px]">
         {listName}
       </h1>
 
-      {/* Display events if available */}
       <div className="space-y-5">
         {sortedEvents.length > 0 ? (
           sortedEvents.map((event, index) => (
-            <EventCard 
-              key={event.id || event.rank} 
-              event={{ ...event, overallRank: index + 1 }} 
-              showRanking={index === 0}  // Only the first event shows the “Ranking” text.
+            <EventCard
+              key={event.id || event.rank}
+              event={{ ...event, overallRank: index + 1 }}
+              showRanking={index === 0}
+              onDelete={() => handleDeleteEvent(event.name)} // pass callback
             />
           ))
         ) : (
@@ -44,16 +57,14 @@ export default function Card({ id, listName, events }: { id: number, listName: s
         ADD
       </button>
 
-      {/* Pop-up Card */}
       {showAddNewEvent && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <AddNewEventPopup 
+          <AddNewEventPopup
             id={id}
-            onClose={() => setShowAddNewEvent(false)} 
-            eventsState={eventsState} 
-            setEventsState={setEventsState} 
+            onClose={() => setShowAddNewEvent(false)}
+            eventsState={eventsState}
+            setEventsState={setEventsState}
           />
-
           {/* Decorative Images */}
           <Image
             src="/pictures/Tweedledee 2.png"
