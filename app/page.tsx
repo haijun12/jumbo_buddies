@@ -12,7 +12,7 @@ export default function Home() {
       <p className="text-3xl text-white italic mb-[50px]">
         Rate Everything & Anything that You've Ever Done, Eaten, Seen, Read, etc.
       </p>
-      <Link href="/collections" className="text-[32px] bg-black text-white px-[20px] py-[20px]">
+      <Link href="/collections" className="my-[20px] p-[20px] bg-black text-white">
         START
       </Link>
     </div>
