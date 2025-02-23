@@ -6,16 +6,16 @@ import Image from "next/image";
 import { useRouter } from "next/navigation"; // For navigation
 import { Event } from "@/app/lib/types";
 import { deleteItem, deleteList } from "@/app/lib/api"; // import both
-// ...
 
 export default function Card({ id, listName, events }: { id: number; listName: string; events: Event[] }) {
   const router = useRouter();
   const [showAddNewEvent, setShowAddNewEvent] = useState(false);
+  // console.log(events)
   const [eventsState, setEventsState] = useState<Event[]>(events || []);
 
   // Create a sorted copy of events based on rank.
   const sortedEvents = [...events].sort((a, b) => a.rank - b.rank);
-
+  console.log(sortedEvents)
   const handleDeleteEvent = async (itemName: string) => {
     try {
       await deleteItem(itemName, id);
@@ -83,7 +83,7 @@ export default function Card({ id, listName, events }: { id: number; listName: s
           <AddNewEventPopup
             id={id}
             onClose={() => setShowAddNewEvent(false)}
-            eventsState={eventsState}
+            eventsState={sortedEvents}
             setEventsState={setEventsState}
           />
           {/* Decorative Images */}

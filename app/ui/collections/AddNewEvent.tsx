@@ -51,7 +51,6 @@ export default function AddNewEventPopup({
   const [showSubmit, setShowSubmit] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const { handleUpdateLeft, handleUpdateRight, endSearch, mid} = useBinarySearch(eventsState.length);
-  console.log(eventsState)
   console.log("Submit button is" + showSubmit)
   console.log("mid is" + mid)
   console.log("Show options2 is" + endSearch)
@@ -98,17 +97,6 @@ export default function AddNewEventPopup({
       onClose();
     }
   };
-
-  // useEffect(() => {
-  //   if (endSearch) {
-  //     console.log("In use effect and updating state" + mid)
-  //     const newRank = mid + 1;
-  //     setEventsState([...eventsState, { id: -1, name: name, description: description, image: "", rank: newRank, type: rating }]);
-
-  //     onClose();
-  //   }
-  // }, [endSearch])
-
 
   return (
     <div className="relative w-full max-w-lg border border-black p-8 bg-white">
