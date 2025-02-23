@@ -1,14 +1,20 @@
 "use client";
 import { useState } from "react";
 import EventVotingCard from "./EventVotingCard";
+import EventCard from "./EventCard";
 
 export default function Card({ listName, events }: { listName: string, events: any[] }) {
   const [showCard, setShowCard] = useState(false);
 
   return (
-    <div className="relative flex flex-col w-full min-h-screen">
+    <div className="relative flex flex-col w-full min-h-screen items-center">
       {/* List Name - Centered at the Top Without Affecting Other Elements */}
       <h1 className="text-6xl italic text-center mt-2 absolute top-16 left-1/2 transform -translate-x-1/2">{listName}</h1>
+
+      {/* Test EventCard Display */}
+      <div className="mt-32"> {/* Added margin to separate from title */}
+        <EventCard event={{ name: "Eating Cheese", rank: 1, description: "It was blue cheese." }} />
+      </div>
 
       {/* ADD Button at Bottom Right (Fixed Positioning) */}
       <button
