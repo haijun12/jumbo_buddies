@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import styles from './nav.module.css';
 import Link from "next/link";
 import Image from "next/image";
+import path from "path";
 
 export default function Navbar() {
     const pathname = usePathname(); // Get the current route
@@ -10,6 +11,8 @@ export default function Navbar() {
     // Define public routes where the Navbar should not be displayed
     const isPublicPage = ["/", "/sign-in", "/sign-up"].includes(pathname);
     if (isPublicPage) return null;
+    console.log(pathname)
+    const paths = pathname.split("/");
 
     return (
      
@@ -17,10 +20,31 @@ export default function Navbar() {
       <div className={styles["navbar-container"]}>
         <ul className={styles["navbar-list"]}>
           <li>
-            <Link href="/" className={styles["navbar-item"]}>
-              <Image src="/pictures/white-rabbit.png" alt="White Rabbit" width={50} height={50} />
-              <span className={`${pathname === "/" ? "bg-yellow-400 text-white " : ""} rounded-full p-2 px-3`}>HOME</span>
-            </Link>
+          {paths.length > 0 ? (
+          <Link href={`/${paths[1]}`} className={styles["navbar-item"]}>
+            <Image 
+              src="/pictures/white-rabbit.png" 
+              alt="White Rabbit" 
+              width={50} 
+              height={50} 
+            />
+            <span className={`${pathname === "/" ? "bg-yellow-400 text-white" : ""} rounded-full p-2 px-3`}>
+              BACK
+            </span>
+          </Link>
+        ) : (
+          <Link href="/" className={styles["navbar-item"]}>
+            <Image 
+              src="/pictures/white-rabbit.png" 
+              alt="White Rabbit" 
+              width={50} 
+              height={50} 
+            />
+            <span className={`${pathname === "/" ? "bg-yellow-400 text-white" : ""} rounded-full p-2 px-3`}>
+              HOME
+            </span>
+          </Link>
+        )}
           </li>
           <li>
             <Link href="/collections" className={styles["navbar-item"]}>
@@ -46,6 +70,4 @@ export default function Navbar() {
     );
   }
   
-
-  
-  
+ 
