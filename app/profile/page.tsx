@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image';
 
 import { SignInButton, SignOutButton, useAuth } from '@clerk/nextjs'
 
@@ -22,10 +23,12 @@ export default function Profile() {
 
       {/* Circular Profile Image (Elipse 1.png) */}
       <div className="relative w-[100px] h-[100px] mb-2">
-        <img
+        <Image
           src="/pictures/Ellipse 1.png"
           alt="Profile"
           className="rounded-full w-full h-full object-cover"
+          width={100}
+          height={100}
         />
       </div>
 

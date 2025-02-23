@@ -2,6 +2,7 @@
 import { usePathname } from "next/navigation";
 import styles from './nav.module.css';
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
     const pathname = usePathname(); // Get the current route
@@ -17,25 +18,25 @@ export default function Navbar() {
         <ul className={styles["navbar-list"]}>
           <li>
             <Link href="/" className={styles["navbar-item"]}>
-              <img src="/pictures/white-rabbit.png" alt="White Rabbit" />
+              <Image src="/pictures/white-rabbit.png" alt="White Rabbit" width={50} height={50} />
               <span className={`${pathname === "/" ? "bg-yellow-400 text-white " : ""} rounded-full p-2 px-3`}>HOME</span>
             </Link>
           </li>
           <li>
             <Link href="/collections" className={styles["navbar-item"]}>
-              <img src="/pictures/mad-hatter.png" alt="Mad Hatter" />
+              <Image src="/pictures/mad-hatter.png" alt="Mad Hatter" width={50} height={50} />
               <span className={`${pathname === "/collections" ? "bg-yellow-400 text-white " : ""} rounded-full p-2 px-3`}>COLLECTION</span>
             </Link>
           </li>
           <li>
             <Link href="/party" className={styles["navbar-item"]}>
-              <img src="/pictures/teapot.png" alt="Teapot" />
+              <Image src="/pictures/teapot.png" alt="Teapot" width={50} height={50} />
               <span className={`${pathname === "/party" ? "bg-yellow-400 text-white " : ""} rounded-full p-2 px-3`}>PARTY</span>
             </Link>
           </li>
           <li>
             <Link href="/profile" className={styles["navbar-item"]}>
-              <img src="/pictures/mirror.png" alt="Mirror" />
+              <Image src="/pictures/mirror.png" alt="Mirror" width={50} height={50} />
               <span className={`${pathname === "/profile" ? "bg-yellow-400 text-white " : ""} rounded-full p-2 px-3`}>PROFILE</span>
             </Link>
           </li>

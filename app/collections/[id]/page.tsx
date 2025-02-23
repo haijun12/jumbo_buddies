@@ -2,13 +2,7 @@ import Card from "@/app/ui/collections/card";
 import { getEventsInList } from "@/app/lib/db_functions";
 import { redirect } from "next/navigation";
 
-interface ListParams {
-  params: {
-    id: string;
-  };
-}
-
-export default async function List({ params }: ListParams) {
+export default async function List({ params }: {params: Promise<{ id: string }>}) {
   const { id } = await params;
   
   try {

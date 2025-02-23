@@ -6,4 +6,12 @@ export type UserProfile = {
   age: number;
 }
 
+export type Event = {
+  id: number;
+  name: string; 
+  description: string; 
+  image: string; 
+  rank: number;
+  type: RatingList;
+}
 //db functions

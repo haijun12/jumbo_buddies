@@ -2,10 +2,12 @@
 import { useState } from "react";
 import EventVotingCard from "./EventVotingCard";
 import EventCard from "./EventCard";
-
-export default function Card({ listName, events }: { listName: string, events: any[] }) {
+import Image from "next/image";
+import { Event } from "@/app/lib/types";
+// TODO: Create a type for the events
+export default function Card({ listName, events }: { listName: string, events: Event[] }) {
   const [showCard, setShowCard] = useState(false);
-
+  console.log(events);
   return (
     <div className="relative flex flex-col w-full min-h-screen items-center">
       {/* List Name - Centered at the Top Without Affecting Other Elements */}
@@ -31,15 +33,19 @@ export default function Card({ listName, events }: { listName: string, events: a
           <EventVotingCard onClose={() => setShowCard(false)} />
 
           {/* The two images on the bottom-left and bottom-right */}
-          <img
+          <Image
             src="/pictures/Tweedledee 2.png"
             alt="Tweedledee Left"
             className="absolute bottom-0 left-0 w-32 h-auto"
+            width={32}
+            height={32}
           />
-          <img
+          <Image
             src="/pictures/Tweedledee 1.png"
             alt="Tweedledee Right"
             className="absolute bottom-0 right-0 w-32 h-auto"
+            width={32}
+            height={32}
           />
         </div>
       )}

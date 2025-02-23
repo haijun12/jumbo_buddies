@@ -2,6 +2,7 @@
 import { neon } from '@neondatabase/serverless';
 import { getClerkUserId } from "./auth";
 import {RatingList} from "./types";
+import { Event } from "./types";
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -80,9 +81,13 @@ export async function getUserListsWithItemCount() {
       throw error;
     }
   }
+  interface EventsInListReturn {
+    listName: string;
+    events: Event[];
+}
 
 // If someone clicks a list, show the contents of that list
-export async function getEventsInList(listId: number) {
+export async function getEventsInList(listId: number) : Promise<EventsInListReturn>{
     try {  
       // Step 1: Ensure the user owns the list
       await ensureTables();
@@ -94,10 +99,10 @@ export async function getEventsInList(listId: number) {
         WHERE id = ${listId};
       `;
       // Step 3: Fetch the events sorted by type (Good -> Ok -> Bad), then by rank
-      const events = await sql`
+      const rawEvents = await sql`
         SELECT id, name, description, image, rank, type
         FROM Users.rating_item
-        WHERE list = ${listId}
+        WHERE list_id = ${listId}
         ORDER BY 
           CASE 
             WHEN type = 'Good' THEN 1 
@@ -106,6 +111,9 @@ export async function getEventsInList(listId: number) {
           END,
           rank ASC;
       `;
+
+      // Type assertion to ensure the SQL results match our Event type
+      const events = rawEvents as unknown as Event[];
       
       return { listName: listName[0].name, events };
     } catch (error) {
@@ -171,13 +179,13 @@ export async function addRankedEvent(
       await ensureTables();  
       await validateListOwner(listId);
   
-      let insertRank = rank; // The position determined by frontend pairwise comparison
+      const insertRank = rank; // The position determined by frontend pairwise comparison
   
       // Step 2: Shift ranks of existing items to maintain order
       await sql`
         UPDATE Users.rating_item
         SET rank = rank + 1
-        WHERE list = ${listId} AND type = ${type} AND rank >= ${insertRank};
+        WHERE list_id = ${listId} AND type = ${type} AND rank >= ${insertRank};
       `;
   
       // Step 3: Insert the new event at its determined rank
@@ -252,7 +260,7 @@ async function ensureTables() {
               image TEXT,
               rank INTEGER NOT NULL,
               type TEXT NOT NULL,
-              list INTEGER REFERENCES Users.Lists(id) ON DELETE CASCADE NOT NULL
+              list_id INTEGER REFERENCES Users.Lists(id) ON DELETE CASCADE NOT NULL
           )
       `;
   } catch (error) {

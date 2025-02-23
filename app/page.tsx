@@ -10,7 +10,7 @@ export default function Home() {
         DOWN THE RABBIT HOLE
       </h1>
       <p className="text-3xl text-white italic mb-[50px]">
-        Rate Everything & Anything that You've Ever Done, Eaten, Seen, Read, etc.
+        Rate Everything & Anything that You&apos;ve Ever Done, Eaten, Seen, Read, etc.
       </p>
       <Link href="/collections" className="my-[20px] p-[20px] bg-black text-white">
         START
