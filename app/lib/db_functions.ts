@@ -170,11 +170,11 @@ export async function addRankedEvent(
     eventName: string,
     description: string,
     image: string,
-    type: RatingList,
+    type: string,
     rank: number
   ) {
     try {
-
+      console.log("Adding ranked event")
       // Ensure the user owns the list
       await ensureTables();  
       await validateListOwner(listId);
@@ -190,7 +190,7 @@ export async function addRankedEvent(
   
       // Step 3: Insert the new event at its determined rank
       await sql`
-        INSERT INTO Users.rating_item (name, description, image, rank, type, list)
+        INSERT INTO Users.rating_item (name, description, image, rank, type, list_id)
         VALUES (${eventName}, ${description}, ${image}, ${insertRank}, ${type}, ${listId});
       `;
   

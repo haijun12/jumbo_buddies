@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Event } from "@/app/lib/types";
 
 // TODO: Create a type for the events
-export default function Card({ listName, events }: { listName: string, events: Event[] }) {
+export default function Card({ id, listName, events }: { id: number, listName: string, events: Event[] }) {
   const [showAddNewEvent, setShowAddNewEvent] = useState(false);
   const [eventsState, setEventsState] = useState<Event[]>(events || []);
   return (
@@ -32,6 +32,7 @@ export default function Card({ listName, events }: { listName: string, events: E
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           {/* The Event Card in the center */}
           <AddNewEventPopup 
+            id={id}
             onClose={() => setShowAddNewEvent(false)} 
             eventsState={eventsState} 
             setEventsState={setEventsState} />

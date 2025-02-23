@@ -1,40 +1,101 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { TextField } from "@mui/material";
 import { Check } from 'lucide-react';
 import { Event } from "@/app/lib/types";
+import { addRankedEvent } from "@/app/lib/db_functions";
+import { useRouter } from "next/navigation";
 
 type AddNewEventPopupProps = {
+  id: number;
   onClose: () => void;
   eventsState: Event[];
   setEventsState: React.Dispatch<React.SetStateAction<Event[]>>;
 };
-const useBinarySearch = (showOptions, ) => {
+const useBinarySearch = (length: number) => {
+  const router = useRouter();
   const [left, setLeft] = useState(0);
-  const [right, setRight] = useState(0);
-  const [mid, setMid] = useState(0);
-  const handleOnNext = () => {
-    setMid(Math.floor((left + right) / 2));
+  const [right, setRight] = useState(length);
+  const [mid, setMid] = useState(Math.floor(length / 2));
+  const showOptions2 = useMemo(() => length > 0 && (right == left || right <= left), [left, right]);
+
+  const handleUpdateLeft = () => {
+    setLeft(() => {
+      const left = mid + 1;
+      setMid(() => Math.floor((left + right) / 2));
+      return left
+    });
+    setMid(() => Math.floor((left + right) / 2));
+  }
+
+  const handleUpdateRight = () => {
+    setRight(() => {
+      const right = mid - 1;
+      setMid(() => Math.floor((left + right) / 2));
+      return right
+    });
     
-  };
-  return { left, right, mid, handleOnNext };
+  }
+  console.log(left, right, mid, length, showOptions2)
+  return { handleUpdateLeft, handleUpdateRight, showOptions2, mid};
 }
 
-export default function AddNewEventPopup({ onClose, eventsState, setEventsState }: AddNewEventPopupProps) {
+
+export default function AddNewEventPopup({ id,onClose, eventsState, setEventsState }: AddNewEventPopupProps) {
   const [rating, setRating] = useState("")
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [showOptions, setShowOptions] = useState(false);
   const [showSubmit, setShowSubmit] = useState(false);
-  const [rank, setRank] = useState(1);
+  const [showOptions, setShowOptions] = useState(false);
+  const { handleUpdateLeft, handleUpdateRight, showOptions2, mid} = useBinarySearch(eventsState.length);
+  console.log(eventsState)
+  console.log("Submit button is" + showSubmit)
+  console.log("mid is" + mid)
   const handleOnNext = () => {
     if (eventsState.length === 0) { 
       setShowSubmit(true);
-      setEventsState([...eventsState, { id: -1, name: name, description: description, image: "", rank: rank, type: rating }]);
     } else {
-      setRank(Math.floor(eventsState.length / 2));
       setShowOptions(true);
     }
   }
+  const handleFirstSubmit = async () => {
+    onClose();
+    setEventsState([...eventsState, { id: -1, name: name, description: description, image: "", rank: 1, type: rating }]);
+    console.log("In handle first submit")
+    await handleSubmitEvent();
+  }
+
+  const handleSubmitEvent = async() => {
+    console.log("In use effect and updating state" + mid)
+    const newRank = mid + 1;
+    setEventsState([...eventsState, { id: -1, name: name, description: description, image: "", rank: newRank, type: rating }]);
+    await addRankedEvent(id, name, description, "", rating, newRank);
+  }
+
+  const handleLeftClick = async () => {
+    handleUpdateLeft();
+    if(showOptions2) {
+      await handleSubmitEvent();
+      onClose();
+    }
+  };
+
+  const handleRightClick = async () => {
+    handleUpdateRight();
+    if(showOptions2) {
+      await handleSubmitEvent();
+      onClose();
+    }
+  };
+
+  // useEffect(() => {
+  //   if (showOptions2) {
+  //     console.log("In use effect and updating state" + mid)
+  //     const newRank = mid + 1;
+  //     setEventsState([...eventsState, { id: -1, name: name, description: description, image: "", rank: newRank, type: rating }]);
+
+  //     onClose();
+  //   }
+  // }, [showOptions2])
 
 
   return (
@@ -81,15 +142,15 @@ export default function AddNewEventPopup({ onClose, eventsState, setEventsState 
         <RatingButton value="Ok" label="Ok" selected={rating === "Ok"} onClick={setRating} color="yellow-400"/>
         <RatingButton value="Bad" label="Horrible" selected={rating === "Bad"} onClick={setRating} color="red-400"/>
       </div>
-      {showOptions && ( // add another variable here pass in upper or lower
+      {showOptions && !showOptions2 && ( // add another variable here pass in upper or lower
         <>
         <p className="text-black mb-3">This way or that way? Choose wisely!</p>
         <div className="flex space-x-4 mb-8 justify-center">
-          <button className="w-[200px] text-black h-[150px] border border-black flex items-center justify-center"> 
+          <button className="w-[200px] text-black h-[150px] border border-black flex items-center justify-center" onClick={handleLeftClick}> 
             {name} 
           </button>
-          <button className="w-[200px] text-black h-[150px] border border-black flex items-center justify-center">
-            {eventsState[rank].name}
+          <button className="w-[200px] text-black h-[150px] border border-black flex items-center justify-center" onClick={handleRightClick}>
+            {eventsState[mid].name}
           </button>
         </div>
         </>
@@ -102,7 +163,7 @@ export default function AddNewEventPopup({ onClose, eventsState, setEventsState 
           <div className="text-black italic text-center">
           No nonsense here—let&apos;s get started!"
           </div>
-          <button className="bg-black text-white px-4 py-2" onClick={onClose}>
+          <button className="bg-black text-white px-4 py-2" onClick={handleFirstSubmit}>
             Submit
           </button>
         </div> 
