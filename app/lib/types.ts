@@ -14,4 +14,13 @@ export type Event = {
   rank: number;
   type: string;
 }
-//db functions
+export type ListCollectionItem = {
+  item_count: string;
+  list_id: number;
+  list_name: string
+}
+
+export type GetUserCollectionResponse = {
+  exists: boolean;
+  lists: ListCollectionItem[]
+}

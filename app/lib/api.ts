@@ -1,4 +1,4 @@
-import { UserProfile, RatingList } from "./types";
+import { UserProfile, RatingList, ListCollectionItem } from "./types";
 
 /**
  * Gets user profile (first name, last name, age).
@@ -12,7 +12,7 @@ export async function getUserProfile(): Promise<UserProfile | null> {
 /**
  * Gets list of rating lists for a user with item count.
  */
-export async function getListCollection(): Promise<{ listId: number; listName: string; itemCount: number }[]> {
+export async function getListCollection(): Promise<ListCollectionItem[]> {
   const response = await fetch("/api/get-user-lists");
   const data = await response.json();
   return data.exists ? data.lists : [];

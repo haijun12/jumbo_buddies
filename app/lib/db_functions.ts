@@ -1,7 +1,7 @@
 "use server";
 import { neon } from '@neondatabase/serverless';
 import { getClerkUserId } from "./auth";
-import {RatingList} from "./types";
+import {GetUserCollectionResponse, ListCollectionItem, RatingList} from "./types";
 import { Event } from "./types";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -54,7 +54,7 @@ export async function createUser() {
   }
 }
 // Does user exist? If so, list their lists and the number of items in that list.
-export async function getUserListsWithItemCount() {
+export async function getUserListsWithItemCount(): Promise<GetUserCollectionResponse> {
     try { 
       // Step 1: Check if the user exists
       await ensureTables();
@@ -75,7 +75,7 @@ export async function getUserListsWithItemCount() {
         ORDER BY l.create_date DESC;
       `;
   
-      return { exists: true, lists: userLists };
+      return { exists: true, lists: userLists as ListCollectionItem[] };
     } catch (error) {
       console.error("Error fetching user lists:", error);
       throw error;
