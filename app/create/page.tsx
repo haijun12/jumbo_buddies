@@ -2,6 +2,7 @@
 import { useState } from "react";
 import TextField from '@mui/material/TextField';
 import { Play } from 'lucide-react';
+import { createRatingList } from '@/app/lib/api';
 
 export default function Create() {
   const [isClicked, setIsClicked] = useState(false);
@@ -12,6 +13,11 @@ export default function Create() {
       setName("");
     }
   };
+
+  const handleOnNext = async () => {
+    await createRatingList(name);
+  }
+
   return (
     <div className="flex flex-col h-full w-full">
       <div className="flex flex-col justify-center items-center h-screen">
@@ -36,7 +42,7 @@ export default function Create() {
                 },
               }}
             />
-            <button className="my-3.5 p-3.5 bg-black text-white">
+            <button onClick={handleOnNext} className="my-3.5 p-3.5 bg-black text-white">
               <Play className="fill-white" />
             </button>
           </div>
