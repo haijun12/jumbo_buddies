@@ -1,5 +1,4 @@
-"use client";
-import * as React from 'react'
+
 import Card from "@/app/ui/collections/card";
 
 interface ListParams {
@@ -9,8 +8,8 @@ interface ListParams {
   }
   
 
-export default function List({ params }: ListParams) {
-  const { id } = React.use(params);
+export default async function List({ params }: ListParams) {
+  const { id }= await params;
   return (
     <div> 
         <Card id={id} />
