@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import EventVotingCard from "../../ui/EventVotingCard";
+import EventVotingCard from "./EventVotingCard";
 
 
 

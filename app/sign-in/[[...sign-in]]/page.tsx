@@ -1,20 +1,6 @@
-"use client";
 import { SignIn } from "@clerk/nextjs";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@clerk/nextjs";
-import Image from "next/image";
 
 export default function Page() {
-  const router = useRouter();
-  const { isSignedIn } = useAuth(); // Check if user is signed in
-
-  // Redirect after sign-in
-  useEffect(() => {
-    if (isSignedIn) {
-      router.push("/dashboard");
-    }
-  }, [isSignedIn, router]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-5 w-full">
