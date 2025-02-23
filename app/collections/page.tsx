@@ -2,6 +2,9 @@
 import { useState } from "react";
 import TextField from '@mui/material/TextField';
 import { Play } from 'lucide-react';
+import { createRatingList } from '@/app/lib/api';
+import { redirect } from "next/navigation";
+
 
 export default function Create() {
   const [isClicked, setIsClicked] = useState(false);
@@ -12,6 +15,13 @@ export default function Create() {
       setName("");
     }
   };
+
+  const handleOnNext = async () => {
+    
+    const id = await createRatingList(name);
+    redirect("/lists/" + id);
+  }
+
   return (
     <div className="fixed bottom-[30px] left-1/2 transform -translate-x-1/2">
       <div className="flex flex-row items-center gap-4">

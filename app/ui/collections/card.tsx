@@ -1,23 +1,20 @@
+"use client";
 import { useState } from "react";
 import EventVotingCard from "../../ui/EventVotingCard";
 
-interface ListParams {
-    params: {
-      name: string;
-    };
-  }
-  
 
-export default function List({ params }: ListParams) {
+
+export default function Card({ id }: { id: string }) {
   const [showCard, setShowCard] = useState(false);
+  console.log("hello");
     return (
         <div> 
             {/* TODO: Make sure that the user is valid */}
-            <h1>Show the list {params.name}</h1>
+            <h1>Show the list {id}</h1>
 
             <>
       <button
-        className="bg-black text-white px-6 py-3 rounded"
+        className="bg-black text-white px-6 py-3"
         onClick={() => setShowCard(true)}
       >
         START

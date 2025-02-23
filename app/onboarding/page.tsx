@@ -10,5 +10,4 @@ export default async function OnboardPage() {
     }
     await createUser();
     redirect("/create");
-  
   }
