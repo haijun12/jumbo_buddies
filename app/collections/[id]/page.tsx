@@ -11,10 +11,10 @@ interface ListParams {
 
 export default async function List({ params }: ListParams) {
   const { id } = await params;
-  const events = await getEventsInList(parseInt(id));
+  const {listName, events } = await getEventsInList(parseInt(id));
   return (
     <div> 
-        <Card id={id} />
+        <Card listName={listName} events={events} />
     </div>
   )
 }
