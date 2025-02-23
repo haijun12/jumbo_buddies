@@ -1,13 +1,21 @@
 'use client'
 import Image from 'next/image';
-
-import { SignInButton, SignOutButton, useAuth } from '@clerk/nextjs'
+import { useState } from "react";
+import { updateUserDetails } from "@/app/lib/db_functions";
+import { SignInButton, SignOutButton, useAuth, useUser } from '@clerk/nextjs'
 
 export default function Profile() {
     const { sessionId } = useAuth()
+    const { user } = useUser()
     const ages = Array.from({ length: 100 }, (_, i) => i);
-
-
+    const [username, setUsername] = useState(user?.username || "");
+    const [firstName, setFirstName] = useState(user?.firstName || "");
+    const [lastName, setLastName] = useState(user?.lastName || "");
+    const [age, setAge] = useState(0);
+    const handleUpdate = async () => {
+      console.log("In handle update: " + username + " " + firstName + " " + lastName + " " + age)
+        await updateUserDetails(username, firstName, lastName, age);
+    }
     if (!sessionId) {
         return <SignInButton />
     }
@@ -33,13 +41,15 @@ export default function Profile() {
       </div>
 
       {/* Edit link/text */}
-      <p className="text-sm text-gray-700 mb-6 cursor-pointer">Edit</p>
+      {/* <p className="text-sm text-gray-700 mb-6 cursor-pointer">Edit</p> */}
 
       {/* Username or Email */}
       <div className="mb-[30px]">
         <input
           type="text"
-          placeholder="Username or Email"
+          placeholder="Username"
+          value={user?.username || ""}
+          onChange={(e) => setUsername(e.target.value)}
           className="border w-[400px] italic border-black p-[20px]"
         />
       </div>
@@ -48,6 +58,8 @@ export default function Profile() {
       <div className="mb-[30px]">
         <input
           type="text"
+          value={user?.firstName || ""}
+          onChange={(e) => setFirstName(e.target.value)}
           placeholder="First Name (optional)"
           className="border w-[400px] italic border-black p-[20px]"
         />
@@ -57,6 +69,8 @@ export default function Profile() {
       <div className="mb-[30px]">
         <input
           type="text"
+          value={user?.lastName || ""}
+          onChange={(e) => setLastName(e.target.value)}
           placeholder="Last Name (optional)"
           className="border w-[400px] italic border-black p-[20px]"
         />
@@ -79,6 +93,7 @@ export default function Profile() {
       backgroundSize: '20px 20px',
       backgroundPosition: 'right 20px center'
     }}
+    onChange={(e) => setAge(parseInt(e.target.value))}
   >
     <option value="" className="italic text-[#9B9B9B]">
       Select Your Age
@@ -99,7 +114,7 @@ export default function Profile() {
         <SignOutButton signOutOptions={{ sessionId }}>
             <button className="h-[60px] my-[20px] p-[20px] bg-[#D54C4C] text-white">SIGN OUT</button>
         </SignOutButton>
-        <button className="h-[60px] my-[20px] p-[20px] bg-black text-white">UPDATE</button>
+        <button onClick = {handleUpdate}className="h-[60px] my-[20px] p-[20px] bg-black text-white">UPDATE</button>
       </div>
     </div>
     </div>
