@@ -8,6 +8,16 @@ type AddNewEventPopupProps = {
   eventsState: Event[];
   setEventsState: React.Dispatch<React.SetStateAction<Event[]>>;
 };
+const useBinarySearch = (showOptions, ) => {
+  const [left, setLeft] = useState(0);
+  const [right, setRight] = useState(0);
+  const [mid, setMid] = useState(0);
+  const handleOnNext = () => {
+    setMid(Math.floor((left + right) / 2));
+    
+  };
+  return { left, right, mid, handleOnNext };
+}
 
 export default function AddNewEventPopup({ onClose, eventsState, setEventsState }: AddNewEventPopupProps) {
   const [rating, setRating] = useState("")
@@ -15,16 +25,15 @@ export default function AddNewEventPopup({ onClose, eventsState, setEventsState 
   const [description, setDescription] = useState("");
   const [showOptions, setShowOptions] = useState(false);
   const [showSubmit, setShowSubmit] = useState(false);
-  console.log(eventsState);
+  const [rank, setRank] = useState(1);
   const handleOnNext = () => {
-    let rank = 1;
     if (eventsState.length === 0) { 
       setShowSubmit(true);
+      setEventsState([...eventsState, { id: -1, name: name, description: description, image: "", rank: rank, type: rating }]);
     } else {
-      rank = eventsState.length + 1;
+      setRank(Math.floor(eventsState.length / 2));
       setShowOptions(true);
     }
-    setEventsState([{ id: -1, name: name, description: description, image: "", rank: rank, type: rating }]);
   }
 
 
@@ -72,15 +81,15 @@ export default function AddNewEventPopup({ onClose, eventsState, setEventsState 
         <RatingButton value="Ok" label="Ok" selected={rating === "Ok"} onClick={setRating} color="yellow-400"/>
         <RatingButton value="Bad" label="Horrible" selected={rating === "Bad"} onClick={setRating} color="red-400"/>
       </div>
-      {showOptions && (
+      {showOptions && ( // add another variable here pass in upper or lower
         <>
         <p className="text-black mb-3">This way or that way? Choose wisely!</p>
         <div className="flex space-x-4 mb-8 justify-center">
-          <button className="w-[200px] text-black h-[150px] border border-black flex items-center justify-center">
-            Option 1
+          <button className="w-[200px] text-black h-[150px] border border-black flex items-center justify-center"> 
+            {name} 
           </button>
           <button className="w-[200px] text-black h-[150px] border border-black flex items-center justify-center">
-            Option 2
+            {eventsState[rank].name}
           </button>
         </div>
         </>
