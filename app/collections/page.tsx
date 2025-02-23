@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import TextField from '@mui/material/TextField';
-import { Play } from 'lucide-react';
+import { Play, X } from 'lucide-react';
 import { createRatingList } from '@/app/lib/api';
 import { useRouter } from "next/navigation";
 
@@ -24,7 +24,18 @@ export default function Create() {
 
   return (
     <div className="fixed bottom-[30px] left-1/2 transform -translate-x-1/2">
+      {!isClicked ?(
+      <button 
+            className={`text-white font-bold my-4 p-4 ${isClicked ? "bg-gray-500" : "bg-black"}`} 
+            onClick={() => setIsClicked(!isClicked)} 
+        >
+            CREATE LIST
+        </button>
+      ) : (
       <div className="flex flex-row items-center gap-4">
+        <button onClick={()=> setIsClicked(!isClicked)} className="h-[60px] my-[20px] p-[20px] bg-black text-white">
+          <X className="fill-white" />
+        </button>
         <TextField
           placeholder="Name the list"
           value={name} 
@@ -39,10 +50,11 @@ export default function Create() {
           }}
         />
 
-        <button className="h-[60px] my-[20px] p-[20px] bg-black text-white">
-          CREATE
+        <button onClick={handleOnNext} className="h-[60px] my-[20px] p-[20px] bg-black text-white">
+          <Play className="fill-white" />
         </button>
       </div>
+      )}
     </div>
 
   );
