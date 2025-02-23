@@ -61,31 +61,42 @@ export default function Profile() {
 
       {/* Age Dropdown */}
       <div className="mb-[30px]">
-        <select
-          className="
-            border border-black w-[400px] italic p-[20px]
-            h-[60px] leading-[60px] bg-white rounded-none          "
-        >
-          <option value="" className="italic">
-            Select Your Age
-          </option>
-          {ages.map((age) => (
-            <option key={age} value={age}>
-              {age}
-            </option>
-          ))}
-        </select>
-      </div>
+  <select
+    className="
+      border border-black w-[400px] italic
+      h-[60px] bg-white shadow-none focus:shadow-none
+      appearance-none rounded-none text-[#9B9B9B] p-[20px]
+      bg-no-repeat bg-right bg-center
+    "
+    style={{
+      WebkitAppearance: 'none',
+      MozAppearance: 'none',
+      boxShadow: 'none',
+      backgroundImage: 'url("/pictures/dropdown-icon.png")',
+      backgroundSize: '20px 20px',
+      backgroundPosition: 'right 20px center'
+    }}
+  >
+    <option value="" className="italic text-[#9B9B9B]">
+      Select Your Age
+    </option>
+    {ages.map((age) => (
+      <option key={age} value={age} className="text-[#9B9B9B]">
+        {age}
+      </option>
+    ))}
+  </select>
+</div>
 
 
 
 
       {/* Buttons: SIGN OUT (red) and UPDATE (black) */}
-      <div className="flex space-x-4">
+      <div className="flex space-x-[50px]">
         <SignOutButton signOutOptions={{ sessionId }}>
-            <button className="bg-red-600 text-white px-6 py-2">SIGN OUT</button>
+            <button className="h-[60px] my-[20px] p-[20px] bg-[#D54C4C] text-white">SIGN OUT</button>
         </SignOutButton>
-        <button className="bg-black text-white px-6 py-2">UPDATE</button>
+        <button className="h-[60px] my-[20px] p-[20px] bg-black text-white">UPDATE</button>
       </div>
     </div>
     </div>
