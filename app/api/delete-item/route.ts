@@ -18,8 +18,9 @@ export async function DELETE(req: Request) {
 
     // Delete item
     await sql`
-      DELETE FROM Users.rating_item WHERE name = ${itemName} AND list = ${listId};
+    DELETE FROM Users.rating_item WHERE name = ${itemName} AND list_id = ${listId};
     `;
+
 
     return NextResponse.json({ message: "Item deleted successfully." });
   } catch (error) {
