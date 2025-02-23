@@ -21,7 +21,7 @@ export default function Home() {
 
         </div>
 
-        <div className="absolute top-[22%] left-[70%] w-full text-center left-1/2 -translate-x-1/2">
+        <div className="absolute top-[22%] left-[74%] w-full text-center left-1/2 -translate-x-1/2">
           <img
             src="/pictures/Rabbit.png"
             alt="Rabbit"
@@ -29,7 +29,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="absolute top-[35%] left-[96%] w-full text-center left-1/2 -translate-x-1/2">
+        <div className="absolute top-[35%] left-[94%] w-full text-center left-1/2 -translate-x-1/2">
           <img
             src="/pictures/Hole.png"
             alt="Hole"
