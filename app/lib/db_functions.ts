@@ -3,6 +3,7 @@ import { neon } from '@neondatabase/serverless';
 import { getClerkUserId } from "./auth";
 import {GetUserCollectionResponse, ListCollectionItem, RatingList} from "./types";
 import { Event } from "./types";
+import { revalidatePath } from 'next/cache';
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -194,6 +195,7 @@ export async function addRankedEvent(
         VALUES (${eventName}, ${description}, ${image}, ${insertRank}, ${type}, ${listId});
       `;
   
+      revalidatePath('/collections/' + listId);
     } catch (error) {
       console.error("Error adding ranked event:", error);
       throw error;
