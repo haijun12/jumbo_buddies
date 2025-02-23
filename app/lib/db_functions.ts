@@ -38,7 +38,7 @@ export async function getUserDetails() {
 // Add row to Usertable (first time login)
 export async function createUser() {
   try {
-      await await ensureTables();
+      await ensureTables();
       const userId = await getClerkUserId();
 
       // Insert user if not exists
