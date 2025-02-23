@@ -52,7 +52,7 @@ export default function AddNewEventPopup({
   const { handleUpdateLeft, handleUpdateRight, endSearch, mid} = useBinarySearch(eventsState.length);
   console.log("Submit button is" + showSubmit)
   console.log("mid is" + mid)
-  console.log("Show options2 is" + endSearch)
+  // console.log("Show options2 is" + endSearch)
   const handleOnNext = () => {
     if (eventsState.length === 0) {
       setShowSubmit(true);
@@ -68,12 +68,13 @@ export default function AddNewEventPopup({
 
   const handleSubmitEvent = async () => {
     const newRank = mid + 1;
-    await addRankedEvent(id, name, description, "", rating, newRank);
+    console.log("NEW RANK" +newRank)
+    // await addRankedEvent(id, name, description, "", rating, newRank);
   };
 
   const handleLeftClick = async () => {
     const endSearch = handleUpdateLeft();
-    console.log(" LEFT SHOW OPTIONS2" + endSearch)
+    // console.log(" LEFT SHOW OPTIONS2" + endSearch)
     if(endSearch) {
       await handleSubmitEvent();
       onClose();
@@ -82,7 +83,7 @@ export default function AddNewEventPopup({
 
   const handleRightClick = async () => {
     const endSearch = handleUpdateRight();
-    console.log("RIGHT SHOW OPTIONS2" + endSearch)
+    // console.log("RIGHT SHOW OPTIONS2" + endSearch)
     if(endSearch) {
       await handleSubmitEvent();
       onClose();
