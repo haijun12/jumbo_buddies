@@ -5,7 +5,7 @@ interface ListRowProps {
 
 export default function ListRow({ title, itemCount }: ListRowProps) {
   return (
-    <button className="w-3/4 py-4 px-[42px] border-[2px] border-black">
+    <button className="w-full py-4 px-[42px] border-[2px] border-black">
       <div className="flex flex-row items-center justify-between">
         <p className="italic text-[36px]">{title}</p>
         <div className="flex flex-col gap-[5px] items-center">
