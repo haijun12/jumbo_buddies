@@ -1,13 +1,14 @@
 "use client";
-import { useState } from "react";
-import EventVotingCard from "./EventVotingCard";
+import React, { useState } from 'react';
+import AddNewEventPopup from "./AddNewEvent";
 import EventCard from "./EventCard";
 import Image from "next/image";
 import { Event } from "@/app/lib/types";
+
 // TODO: Create a type for the events
 export default function Card({ listName, events }: { listName: string, events: Event[] }) {
-  const [showCard, setShowCard] = useState(false);
-  console.log(events);
+  const [showAddNewEvent, setShowAddNewEvent] = useState(false);
+  const [eventsState, setEventsState] = useState<Event[]>(events || []);
   return (
     <div className="relative flex flex-col w-full min-h-screen items-center">
       {/* List Name - Centered at the Top Without Affecting Other Elements */}
@@ -21,16 +22,19 @@ export default function Card({ listName, events }: { listName: string, events: E
       {/* ADD Button at Bottom Right (Fixed Positioning) */}
       <button
         className="fixed bottom-6 right-6 bg-black text-white px-6 py-3 shadow-lg hover:bg-gray-800"
-        onClick={() => setShowCard(true)}
+        onClick={() => setShowAddNewEvent(true)}
       >
         ADD
       </button>
 
       {/* Pop-up Card */}
-      {showCard && (
+      {showAddNewEvent && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           {/* The Event Card in the center */}
-          <EventVotingCard onClose={() => setShowCard(false)} />
+          <AddNewEventPopup 
+            onClose={() => setShowAddNewEvent(false)} 
+            eventsState={eventsState} 
+            setEventsState={setEventsState} />
 
           {/* The two images on the bottom-left and bottom-right */}
           <Image
