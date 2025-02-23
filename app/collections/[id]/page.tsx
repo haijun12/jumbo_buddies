@@ -13,7 +13,7 @@ export default async function List({ params }: ListParams) {
   const { id } = await params;
   const {listName, events } = await getEventsInList(parseInt(id));
   return (
-    <div> 
+    <div className="w-full"> 
         <Card listName={listName} events={events} />
     </div>
   )
