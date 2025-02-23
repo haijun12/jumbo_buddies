@@ -101,4 +101,16 @@ export async function deleteItem(itemName: string, listId: number): Promise<void
       headers: { "Content-Type": "application/json" },
     });
   }
+
+/**
+ * Deletes an entire list by ID (and all its items).
+ */
+export async function deleteList(listId: number): Promise<void> {
+  await fetch("/api/delete-list", {
+    method: "DELETE",
+    body: JSON.stringify({ listId }),
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
   
