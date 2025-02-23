@@ -14,7 +14,7 @@ export default function EventCard({ event, showRanking = false }: EventCardProps
         {/* Conditionally render "Ranking" for the first event */}
         {showRanking && (
           <div 
-            className="absolute -top-[25px] left-0 text-[24px]"
+            className="absolute -top-[65px] left-0 text-[24px]"
             style={{ fontFamily: 'SF Pro Display' }}
           >
             Ranking
