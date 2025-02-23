@@ -35,13 +35,11 @@ export default function EventCard({ event, showRanking = false }: EventCardProps
       <div className="flex flex-col w-full p-6 border border-black">
         <h2 
           className="text-4xl font-normal mb-2"
-          style={{ fontFamily: 'SF Pro Display' }}
         >
           {event.name}
         </h2>
         <p 
           className="text-2xl font-normal"
-          style={{ fontFamily: 'SF Pro Display' }}
         >
           {event.description}
         </p>
