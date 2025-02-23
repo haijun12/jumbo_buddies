@@ -5,7 +5,6 @@ import EventCard from "./EventCard";
 import Image from "next/image";
 import { Event } from "@/app/lib/types";
 
-// TODO: Create a type for the events
 export default function Card({ id, listName, events }: { id: number, listName: string, events: Event[] }) {
   const [showAddNewEvent, setShowAddNewEvent] = useState(false);
   const [eventsState, setEventsState] = useState<Event[]>(events || []);
@@ -14,15 +13,14 @@ export default function Card({ id, listName, events }: { id: number, listName: s
   const sortedEvents = [...eventsState].sort((a, b) => a.rank - b.rank);
 
   return (
-    <div className="relative flex flex-col w-full min-h-screen mx-auto">
-      {/* List Name - Centered at the Top */}
-      <h1 className="text-6xl text-center mt-2 absolute top-16 left-1/2 transform -translate-x-1/2">
+    <div className="relative flex flex-col w-full min-h-screen mx-auto pt-16">
+      {/* List Name - Now in normal flow with bottom margin for spacing */}
+      <h1 className="text-6xl text-center mt-2 mb-[75px]">
         {listName}
       </h1>
 
       {/* Display events if available */}
-      {/* We use a custom margin-top (mt-[164px]) so that the first event’s “Ranking” text is 75px below the list title */}
-      <div className="mt-[164px] space-y-5">
+      <div className="space-y-5">
         {sortedEvents.length > 0 ? (
           sortedEvents.map((event, index) => (
             <EventCard 
