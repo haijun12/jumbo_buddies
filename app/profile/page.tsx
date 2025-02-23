@@ -23,14 +23,14 @@ export default function Profile() {
     return (
       <div className="w-full min-h-screen flex flex-col">
       <div className="p-4 text-center">
-        <h1 className="font-alice text-[75px] font-bold mb-4">
+        <h1 className="font-alice text-[75px] font-bold">
           Who are You?
         </h1>
       </div>
       <div className="flex flex-col items-center justify-center p-8">
 
       {/* Circular Profile Image (Elipse 1.png) */}
-      <div className="relative w-[100px] h-[100px] mb-2">
+      <div className="relative w-[100px] h-[100px] mb-[30px]">
         <Image
           src="/pictures/Ellipse 1.png"
           alt="Profile"
@@ -44,7 +44,7 @@ export default function Profile() {
       {/* <p className="text-sm text-gray-700 mb-6 cursor-pointer">Edit</p> */}
 
       {/* Username or Email */}
-      <div className="mb-[30px]">
+      <div className="mb-[15px]">
         <input
           type="text"
           placeholder="Username"
@@ -55,7 +55,7 @@ export default function Profile() {
       </div>
 
       {/* First Name (optional) */}
-      <div className="mb-[30px]">
+      <div className="mb-[15px]">
         <input
           type="text"
           value={user?.firstName || ""}
@@ -66,7 +66,7 @@ export default function Profile() {
       </div>
 
       {/* Last Name (optional) */}
-      <div className="mb-[30px]">
+      <div className="mb-[15px]">
         <input
           type="text"
           value={user?.lastName || ""}
@@ -77,7 +77,7 @@ export default function Profile() {
       </div>
 
       {/* Age Dropdown */}
-      <div className="mb-[30px]">
+      <div className="mb-[15px]">
   <select
     className="
       border border-black w-[400px] italic
