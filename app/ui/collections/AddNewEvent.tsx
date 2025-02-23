@@ -14,18 +14,19 @@ const useBinarySearch = (length: number) => {
   const [left, setLeft] = useState(0);
   const [right, setRight] = useState(length);
   const [mid, setMid] = useState(Math.floor(length / 2));
-
+  // 
   const handleUpdateLeft = () => {
-    const newLeft = mid + 1;
+    const newLeft = mid - 1;
     const newMid = Math.floor((newLeft + right) / 2);
+    console.log("Update left", newLeft, newMid)
     setLeft(newLeft);
     setMid(newMid);
     const endSearch = length > 0 && (right <= newLeft);
     return endSearch;
   };
-
+  // 
   const handleUpdateRight = () => {
-    const newRight = mid - 1;
+    const newRight = mid + 1;
     const newMid = Math.floor((left + newRight) / 2);
     setRight(newRight);
     setMid(newMid);
