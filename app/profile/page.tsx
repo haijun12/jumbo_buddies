@@ -45,7 +45,7 @@ export default function Profile() {
       <div className="mb-[30px]">
         <input
           type="text"
-          placeholder="First Name (optionial)"
+          placeholder="First Name (optional)"
           className="border w-[400px] italic border-black p-[20px]"
         />
       </div>
@@ -54,7 +54,7 @@ export default function Profile() {
       <div className="mb-[30px]">
         <input
           type="text"
-          placeholder="Last Name (optionial)"
+          placeholder="Last Name (optional)"
           className="border w-[400px] italic border-black p-[20px]"
         />
       </div>
@@ -64,21 +64,13 @@ export default function Profile() {
         <select
           className="
             border border-black w-[400px] italic p-[20px]
-            h-[60px] leading-[60px] bg-white rounded-none
-            pr-[40px] appearance-none bg-no-repeat bg-right-[10px] bg-center
-          "
-          style={{
-            WebkitAppearance: 'none',
-            MozAppearance: 'none',    
-            color: 'black',           
-          }}
+            h-[60px] leading-[60px] bg-white rounded-none          "
         >
-          {/* Simulated placeholder option */}
-          <option value="" style={{ color: '#9B9B9B' }} className="italic">
+          <option value="" className="italic">
             Select Your Age
           </option>
           {ages.map((age) => (
-            <option key={age} style={{ color: 'black' }} value={age}>
+            <option key={age} value={age}>
               {age}
             </option>
           ))}
