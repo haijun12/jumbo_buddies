@@ -123,7 +123,7 @@ export async function getEventsInList(listId: number) : Promise<EventsInListRetu
   }
 
 // Update user
-export async function updateUserDetails(firstName: string, lastName: string, age: number) {
+export async function updateUserDetails(username: string, firstName: string, lastName: string, age: number) {
     try {
         await ensureTables();
       // Ensure the user exists before updating
@@ -134,7 +134,7 @@ export async function updateUserDetails(firstName: string, lastName: string, age
       // Update user details
       await sql`
         UPDATE Users.User
-        SET first_name = ${firstName}, last_name = ${lastName}, age = ${age}
+        SET username = ${username}, first_name = ${firstName}, last_name = ${lastName}, age = ${age}
         WHERE id = ${userId};
       `;
   
@@ -234,6 +234,7 @@ async function ensureTables() {
       await sql`
           CREATE TABLE IF NOT EXISTS Users.User (
               id TEXT PRIMARY KEY,
+              username TEXT,
               first_name TEXT,
               last_name TEXT,
               age INTEGER
