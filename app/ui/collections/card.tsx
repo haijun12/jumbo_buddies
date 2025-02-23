@@ -14,7 +14,7 @@ export default function Card({ id }: { id: string }) {
             <h1>Show the list {id}</h1>
 
         <button
-        className="bg-black text-white px-6 py-3 rounded"
+        className="bg-black text-white px-6 py-3"
         onClick={() => setShowCard(true)}
       >
         START
