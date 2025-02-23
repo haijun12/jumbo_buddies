@@ -15,7 +15,7 @@ export default function Home() {
       <p className="text-3xl text-white mb-6">
         Rate Everything & Anything that You've Ever Done, Eaten, Seen, Read, etc.
       </p>
-      <Link href="/create"
+      <Link href="/collections"
         className="bg-black text-white px-6 py-3 rounded"
       >
         START

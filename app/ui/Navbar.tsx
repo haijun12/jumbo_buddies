@@ -23,9 +23,9 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
-            <Link href="/create" className={styles["navbar-item"]}>
+            <Link href="/collections" className={styles["navbar-item"]}>
               <img src="/pictures/mad-hatter.png" alt="Mad Hatter" />
-              <span className={`${pathname === "/create" ? "bg-yellow-400 text-white " : ""} rounded-full p-2 px-3`}>COLLECTION</span>
+              <span className={`${pathname === "/collections" ? "bg-yellow-400 text-white " : ""} rounded-full p-2 px-3`}>COLLECTION</span>
             </Link>
           </li>
           <li>
