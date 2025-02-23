@@ -7,8 +7,14 @@ import { useState } from "react";
 export function CreateButton() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
   const handleOnNext = async () => {
+    // Prevent creation if the name is empty or just whitespace
+    if (!name.trim()) {
+      setError("List name is required.");
+      return;
+    }
     const id = await createUserList(name);
     console.log("Created list with id and name: ", id, name);
     router.push("/collections/" + id);
@@ -20,7 +26,12 @@ export function CreateButton() {
         <TextField
           placeholder="Name the list"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => {
+            setName(e.target.value);
+            setError("");
+          }}
+          error={Boolean(error)}
+          helperText={error}
           sx={{
             "& .MuiOutlinedInput-root": {
               borderRadius: 0,

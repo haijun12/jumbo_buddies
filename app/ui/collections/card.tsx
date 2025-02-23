@@ -33,7 +33,7 @@ export default function Card({ id, listName, events }: { id: number, listName: s
           ))
         ) : (
           <p className="text-2xl text-center">
-            Placeholder to Show when no events are available
+            Click ADD to start ranking!
           </p>
         )}
       </div>
