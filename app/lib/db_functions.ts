@@ -69,7 +69,7 @@ export async function getUserListsWithItemCount(): Promise<GetUserCollectionResp
           l.name AS list_name,
           COUNT(r.id) AS item_count
         FROM Users.Lists l
-        LEFT JOIN Users.rating_item r ON l.id = r.list
+        LEFT JOIN Users.rating_item r ON l.id = r.list_id
         WHERE l.user_id = ${userId}
         GROUP BY l.id
         ORDER BY l.create_date DESC;
