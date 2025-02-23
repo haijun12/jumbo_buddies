@@ -12,7 +12,7 @@ export default function Profile() {
     }
 
     return (
-        <div className="flex flex-col"> 
+        <div className="flex flex-col w-full"> 
         <div className="min-h-screen flex flex-col items-center justify-center p-8">
       {/* Heading */}
       <h1 className="text-5xl font-bold-alice mb-6">Who Are You?</h1>

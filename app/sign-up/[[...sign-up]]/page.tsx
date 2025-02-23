@@ -17,8 +17,8 @@ export default function Page() {
   }, [isSignedIn, router]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-5">
-      <h1 className="text-3xl font-bold mb-4">Whooo are youu?</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-5 w-full">
+      <h1 className="text-3xl font-bold mb-4">Introooduce yourseelf!</h1>
         
         <SignUp />
 

@@ -1,14 +1,12 @@
 "use client";
 import { useState } from "react";
 import TextField from '@mui/material/TextField';
-import { Play } from 'lucide-react';
 import { createRatingList } from '@/app/lib/api';
 import { useRouter } from "next/navigation";
 
 
 export default function Create() {
   const router = useRouter();
-  const [isClicked, setIsClicked] = useState(false);
   const [name, setName] = useState("Name the list");
 
   const handleFocus = () => {
