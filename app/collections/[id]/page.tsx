@@ -1,20 +1,25 @@
-
 import Card from "@/app/ui/collections/card";
 import { getEventsInList } from "@/app/lib/db_functions";
+import { redirect } from "next/navigation";
 
 interface ListParams {
-    params: {
-      id: string;
-    };
-  }
-  
+  params: {
+    id: string;
+  };
+}
 
 export default async function List({ params }: ListParams) {
   const { id } = await params;
-  const {listName, events } = await getEventsInList(parseInt(id));
-  return (
-    <div className="w-full"> 
+  
+  try {
+    const { listName, events } = await getEventsInList(parseInt(id));
+    return (
+      <div className="w-full">
         <Card listName={listName} events={events} />
-    </div>
-  )
+      </div>
+    );
+  } catch (error) {
+    console.error(error);
+    redirect("/");
+  }
 }

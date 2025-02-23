@@ -7,13 +7,7 @@ import { useRouter } from "next/navigation";
 
 export default function Create() {
   const router = useRouter();
-  const [name, setName] = useState("Name the list");
-
-  const handleFocus = () => {
-    if (name === "Name the list") {
-      setName("");
-    }
-  };
+  const [name, setName] = useState("");
 
   const handleOnNext = async () => {
     const id = await createUserList(name);
@@ -34,7 +28,6 @@ export default function Create() {
           <TextField
             placeholder="Name the list"
             value={name} 
-            onFocus={handleFocus}
             onChange={(e) => setName(e.target.value)}
             sx={{
               '& .MuiOutlinedInput-root': {
@@ -44,6 +37,7 @@ export default function Create() {
                 fontStyle: 'italic',
               },
             }}
+            required
           />
 
           <button onClick={handleOnNext} className="h-[60px] my-[20px] p-[20px] bg-black text-white">

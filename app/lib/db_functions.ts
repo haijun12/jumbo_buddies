@@ -57,7 +57,7 @@ export async function getUserListsWithItemCount() {
     try { 
       // Step 1: Check if the user exists
       await ensureTables();
-      validateUserExists();
+      await validateUserExists();
 
       const userId = await getClerkUserId();
   
@@ -86,7 +86,7 @@ export async function getEventsInList(listId: number) {
     try {  
       // Step 1: Ensure the user owns the list
       await ensureTables();
-      validateListOwner(listId);
+      await validateListOwner(listId);
       // Step 2: Fetch the list name
       const listName = await sql`
         SELECT name
@@ -119,7 +119,7 @@ export async function updateUserDetails(firstName: string, lastName: string, age
     try {
         await ensureTables();
       // Ensure the user exists before updating
-      validateUserExists();
+      await validateUserExists();
 
       const userId = await getClerkUserId();
   
@@ -169,7 +169,7 @@ export async function addRankedEvent(
 
       // Ensure the user owns the list
       await ensureTables();  
-      validateListOwner(listId);
+      await validateListOwner(listId);
   
       let insertRank = rank; // The position determined by frontend pairwise comparison
   
