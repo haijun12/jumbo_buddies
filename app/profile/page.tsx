@@ -12,13 +12,16 @@ export default function Profile() {
     }
 
     return (
-        <div className="flex flex-col w-full"> 
-        <div className="min-h-screen flex flex-col items-center justify-center p-8">
-      {/* Heading */}
-      <h1 className="text-5xl font-bold-alice mb-6">Who Are You?</h1>
+      <div className="w-full min-h-screen flex flex-col">
+      <div className="p-4 text-center">
+        <h1 className="font-alice text-[75px] font-bold mb-4">
+          Who are You?
+        </h1>
+      </div>
+      <div className="flex flex-col items-center justify-center p-8">
 
       {/* Circular Profile Image (Elipse 1.png) */}
-      <div className="relative w-24 h-24 mb-2">
+      <div className="relative w-[100px] h-[100px] mb-2">
         <img
           src="/pictures/Ellipse 1.png"
           alt="Profile"
@@ -30,43 +33,60 @@ export default function Profile() {
       <p className="text-sm text-gray-700 mb-6 cursor-pointer">Edit</p>
 
       {/* Username or Email */}
-      <div className="w-72 mb-4">
+      <div className="mb-[30px]">
         <input
           type="text"
           placeholder="Username or Email"
-          className="border border-black w-full p-2"
+          className="border w-[400px] italic border-black p-[20px]"
         />
       </div>
 
       {/* First Name (optional) */}
-      <div className="w-72 mb-4">
+      <div className="mb-[30px]">
         <input
           type="text"
           placeholder="First Name (optionial)"
-          className="border border-black w-full p-2"
+          className="border w-[400px] italic border-black p-[20px]"
         />
       </div>
 
       {/* Last Name (optional) */}
-      <div className="w-72 mb-4">
+      <div className="mb-[30px]">
         <input
           type="text"
           placeholder="Last Name (optionial)"
-          className="border border-black w-full p-2"
+          className="border w-[400px] italic border-black p-[20px]"
         />
       </div>
 
       {/* Age Dropdown */}
-      <div className="w-72 mb-6">
-        <select className="border border-black w-full p-2">
-          <option value="">Age</option>
+      <div className="mb-[30px]">
+        <select
+          className="
+            border border-black w-[400px] italic p-[20px]
+            h-[60px] leading-[60px] bg-white rounded-none
+            pr-[40px] appearance-none bg-no-repeat bg-right-[10px] bg-center
+          "
+          style={{
+            WebkitAppearance: 'none',
+            MozAppearance: 'none',    
+            color: 'black',           
+          }}
+        >
+          {/* Simulated placeholder option */}
+          <option value="" style={{ color: '#9B9B9B' }} className="italic">
+            Select Your Age
+          </option>
           {ages.map((age) => (
-            <option key={age} value={age}>
+            <option key={age} style={{ color: 'black' }} value={age}>
               {age}
             </option>
           ))}
         </select>
       </div>
+
+
+
 
       {/* Buttons: SIGN OUT (red) and UPDATE (black) */}
       <div className="flex space-x-4">
