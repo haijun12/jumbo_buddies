@@ -3,7 +3,6 @@ import { TextField } from "@mui/material";
 import { Check } from 'lucide-react';
 import { Event } from "@/app/lib/types";
 import { addRankedEvent } from "@/app/lib/db_functions";
-import { useRouter } from "next/navigation";
 
 type AddNewEventPopupProps = {
   id: number;
@@ -12,11 +11,10 @@ type AddNewEventPopupProps = {
   setEventsState: React.Dispatch<React.SetStateAction<Event[]>>;
 };
 const useBinarySearch = (length: number) => {
-  const router = useRouter();
   const [left, setLeft] = useState(0);
   const [right, setRight] = useState(length);
   const [mid, setMid] = useState(Math.floor(length / 2));
-  const showOptions2 = useMemo(() => length > 0 && (right == left || right <= left), [left, right]);
+  const showOptions2 = length > 0 && (right == left || right <= left);
 
   const handleUpdateLeft = () => {
     setLeft(() => {
@@ -25,6 +23,7 @@ const useBinarySearch = (length: number) => {
       return left
     });
     setMid(() => Math.floor((left + right) / 2));
+    return showOptions2;
   }
 
   const handleUpdateRight = () => {
@@ -33,6 +32,7 @@ const useBinarySearch = (length: number) => {
       setMid(() => Math.floor((left + right) / 2));
       return right
     });
+    return showOptions2;
     
   }
   console.log(left, right, mid, length, showOptions2)
@@ -50,6 +50,7 @@ export default function AddNewEventPopup({ id,onClose, eventsState, setEventsSta
   console.log(eventsState)
   console.log("Submit button is" + showSubmit)
   console.log("mid is" + mid)
+  console.log("Show options2 is" + showOptions2)
   const handleOnNext = () => {
     if (eventsState.length === 0) { 
       setShowSubmit(true);
@@ -72,7 +73,8 @@ export default function AddNewEventPopup({ id,onClose, eventsState, setEventsSta
   }
 
   const handleLeftClick = async () => {
-    handleUpdateLeft();
+    const showOptions2 = handleUpdateLeft();
+    console.log(" LEFT SHOW OPTIONS2" + showOptions2)
     if(showOptions2) {
       await handleSubmitEvent();
       onClose();
@@ -80,7 +82,8 @@ export default function AddNewEventPopup({ id,onClose, eventsState, setEventsSta
   };
 
   const handleRightClick = async () => {
-    handleUpdateRight();
+    const showOptions2 = handleUpdateRight();
+    console.log("RIGHT SHOW OPTIONS2" + showOptions2)
     if(showOptions2) {
       await handleSubmitEvent();
       onClose();
