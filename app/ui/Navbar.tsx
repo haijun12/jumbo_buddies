@@ -9,7 +9,6 @@ export default function Navbar() {
     // Define public routes where the Navbar should not be displayed
     const isPublicPage = ["/", "/sign-in", "/sign-up"].includes(pathname);
     if (isPublicPage) return null;
-    console.log(pathname);
 
     return (
      

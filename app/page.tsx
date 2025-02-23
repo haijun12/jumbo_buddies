@@ -3,7 +3,7 @@ import Link from "next/link"
 export default function Home() {
   return (
     <div
-      className="min-h-screen flex flex-col justify-center items-center text-center bg-cover bg-center bg-no-repeat"
+      className="min-h-screen flex flex-col justify-center items-center text-center bg-cover bg-center bg-no-repeat w-full"
       style={{ backgroundImage: "url('/pictures/homeBackground.png')" }}
     >
       <h1 className="text-8xl font-alice font-bold text-white mb-[50px]">

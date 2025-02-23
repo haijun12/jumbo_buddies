@@ -6,14 +6,14 @@ import EventVotingCard from "../../ui/EventVotingCard";
 
 export default function Card({ id }: { id: string }) {
   const [showCard, setShowCard] = useState(false);
-  console.log("hello");
+    console.log(id);
+
     return (
-        <div> 
+        <div className="flex flex-col"> 
             {/* TODO: Make sure that the user is valid */}
             <h1>Show the list {id}</h1>
 
-            <>
-      <button
+        <button
         className="bg-black text-white px-6 py-3"
         onClick={() => setShowCard(true)}
       >
@@ -38,7 +38,6 @@ export default function Card({ id }: { id: string }) {
           />
         </div>
       )}
-    </>
-        </div>
+    </div>
     )
 }
