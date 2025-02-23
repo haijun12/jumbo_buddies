@@ -4,20 +4,19 @@ import EventVotingCard from "../../ui/EventVotingCard";
 
 
 
-export default function Card({ id }: { id: string }) {
+export default function Card({ listName, events }: { listName: string, events: any[] }) {
   const [showCard, setShowCard] = useState(false);
-    console.log(id);
 
     return (
-        <div className="flex flex-col"> 
+        <div className="flex flex-col items-center justify-center w-full"> 
             {/* TODO: Make sure that the user is valid */}
-            <h1>Show the list {id}</h1>
+            <h1>{listName}</h1>
 
         <button
         className="bg-black text-white px-6 py-3"
         onClick={() => setShowCard(true)}
       >
-        START
+        Add
       </button>
 
       {showCard && (

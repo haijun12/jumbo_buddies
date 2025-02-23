@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import TextField from '@mui/material/TextField';
-import { createRatingList } from '@/app/lib/api';
+import { createUserList } from "../lib/db_functions";
 import { useRouter } from "next/navigation";
 
 
@@ -16,8 +16,9 @@ export default function Create() {
   };
 
   const handleOnNext = async () => {
-    const id = await createRatingList(name);
-    router.push("/lists/" + id);
+    const id = await createUserList(name);
+    console.log("Created list with id and name: ", id, name);
+    router.push("/collections/" + id);
   }
 
   return (
@@ -33,6 +34,7 @@ export default function Create() {
           <TextField
             placeholder="Name the list"
             value={name} 
+            onFocus={handleFocus}
             onChange={(e) => setName(e.target.value)}
             sx={{
               '& .MuiOutlinedInput-root': {
@@ -44,7 +46,7 @@ export default function Create() {
             }}
           />
 
-          <button className="h-[60px] my-[20px] p-[20px] bg-black text-white">
+          <button onClick={handleOnNext} className="h-[60px] my-[20px] p-[20px] bg-black text-white">
             CREATE
           </button>
         </div>

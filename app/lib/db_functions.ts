@@ -54,10 +54,7 @@ export async function createUser() {
 }
 // Does user exist? If so, list their lists and the number of items in that list.
 export async function getUserListsWithItemCount() {
-    try {
-
-      
-  
+    try { 
       // Step 1: Check if the user exists
       await ensureTables();
       validateUserExists();
@@ -90,8 +87,13 @@ export async function getEventsInList(listId: number) {
       // Step 1: Ensure the user owns the list
       await ensureTables();
       validateListOwner(listId);
-  
-      // Step 2: Fetch the events sorted by type (Good -> Ok -> Bad), then by rank
+      // Step 2: Fetch the list name
+      const listName = await sql`
+        SELECT name
+        FROM Users.Lists
+        WHERE id = ${listId};
+      `;
+      // Step 3: Fetch the events sorted by type (Good -> Ok -> Bad), then by rank
       const events = await sql`
         SELECT id, name, description, image, rank, type
         FROM Users.rating_item
@@ -104,8 +106,8 @@ export async function getEventsInList(listId: number) {
           END,
           rank ASC;
       `;
-  
-      return events;
+      
+      return { listName: listName[0].name, events };
     } catch (error) {
       console.error("Error fetching events in list:", error);
       throw error;
@@ -141,10 +143,12 @@ export async function createUserList(listName: string) {
     await ensureTables();
       const userId = await getClerkUserId();
 
-      await sql`
+      const createUserListResult = await sql`
           INSERT INTO Users.Lists (name, create_date, update_date, user_id)
-          VALUES (${listName}, NOW(), NOW(), ${userId});
+          VALUES (${listName}, NOW(), NOW(), ${userId})
+          RETURNING id;
       `;
+      return createUserListResult[0].id;
   } catch (error) {
       console.error("Error creating list:", error);
       throw error;

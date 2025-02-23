@@ -1,5 +1,6 @@
 
 import Card from "@/app/ui/collections/card";
+import { getEventsInList } from "@/app/lib/db_functions";
 
 interface ListParams {
     params: {
@@ -9,10 +10,11 @@ interface ListParams {
   
 
 export default async function List({ params }: ListParams) {
-  const { id }= await params;
+  const { id } = await params;
+  const {listName, events } = await getEventsInList(parseInt(id));
   return (
     <div> 
-        <Card id={id} />
+        <Card listName={listName} events={events} />
     </div>
   )
 }
