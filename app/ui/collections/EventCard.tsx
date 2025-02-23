@@ -1,29 +1,51 @@
 "use client";
 import Image from "next/image";
 
-export default function EventCard({ event }: { event: { name: string; rank: number; description: string } }) {
+interface EventCardProps {
+  event: { name: string; rank: number; description: string; overallRank?: number };
+  showRanking?: boolean;
+}
+
+export default function EventCard({ event, showRanking = false }: EventCardProps) {
   return (
-    <div className="flex items-center bg-white shadow-md rounded-lg p-4 w-full max-w-lg">
-      {/* Left Side - Image with Rank Overlay */}
-      <div className="relative w-20 h-20 mr-4">
-        {/* Fixed Event Image */}
+    <div className="flex items-center w-[800px] h-[140px] mx-auto mb-5">
+      {/* Left Side - Image with centered overall rank overlay */}
+      <div className="relative w-[100px] h-[100px] mr-4 flex-shrink-0">
+        {/* Conditionally render "Ranking" for the first event */}
+        {showRanking && (
+          <div 
+            className="absolute -top-[25px] left-0 text-[24px]"
+            style={{ fontFamily: 'SF Pro Display' }}
+          >
+            Ranking
+          </div>
+        )}
         <Image
-          src="/images/event_placeholder.png" // Change this to your image file path
+          src="/pictures/blank_card.png" 
           alt="Event Image"
-          layout="fill"
-          objectFit="cover"
-          className="rounded-lg"
+          width={100}
+          height={100}
+          className="object-contain"
         />
-        {/* Rank Overlay */}
-        <div className="absolute top-0 left-0 bg-black text-white text-sm font-bold px-2 py-1 rounded-bl-lg">
-          #{event.rank}
+        <div className="absolute top-[44%] left-[68%] transform -translate-x-1/2 -translate-y-1/2 text-black text-[20px] font-bold">
+          {event.overallRank}
         </div>
       </div>
 
-      {/* Right Side - Event Details */}
-      <div className="flex flex-col">
-        <h2 className="text-lg font-semibold">{event.name} #{event.rank}</h2>
-        <p className="text-gray-600">{event.description}</p>
+      {/* Right Side - Text Container with border */}
+      <div className="flex flex-col w-full p-6 border border-black">
+        <h2 
+          className="text-4xl font-normal mb-2"
+          style={{ fontFamily: 'SF Pro Display' }}
+        >
+          {event.name}
+        </h2>
+        <p 
+          className="text-2xl font-normal"
+          style={{ fontFamily: 'SF Pro Display' }}
+        >
+          {event.description}
+        </p>
       </div>
     </div>
   );
