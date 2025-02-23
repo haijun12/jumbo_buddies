@@ -22,14 +22,6 @@ export default function Page() {
         
         <SignUp />
 
-      {/* Caterpillar Image */}
-      <Image 
-      src="/pictures/login_caterpillar.png" 
-      alt="Caterpillar" 
-      width={400} 
-      height={400} 
-      className="absolute bottom-4 left-4" 
-      />
     </div>
   );
 }
