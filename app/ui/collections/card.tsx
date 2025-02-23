@@ -13,8 +13,8 @@ export default function Card({ id, listName, events }: { id: number; listName: s
   const [showAddNewEvent, setShowAddNewEvent] = useState(false);
   const [eventsState, setEventsState] = useState<Event[]>(events || []);
 
-  // Sort by rank
-  const sortedEvents = [...eventsState].sort((a, b) => a.rank - b.rank);
+  // Create a sorted copy of events based on rank.
+  const sortedEvents = [...events].sort((a, b) => a.rank - b.rank);
 
   const handleDeleteEvent = async (itemName: string) => {
     try {

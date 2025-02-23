@@ -15,29 +15,29 @@ const useBinarySearch = (length: number) => {
   const [left, setLeft] = useState(0);
   const [right, setRight] = useState(length);
   const [mid, setMid] = useState(Math.floor(length / 2));
-  const showOptions2 = length > 0 && (right === left || right <= left);
 
   const handleUpdateLeft = () => {
-    setLeft(() => {
-      const left = mid + 1;
-      setMid(() => Math.floor((left + right) / 2));
-      return left;
-    });
-    setMid(() => Math.floor((left + right) / 2));
-    return showOptions2;
+    const newLeft = mid + 1;
+    const newMid = Math.floor((newLeft + right) / 2);
+    setLeft(newLeft);
+    setMid(newMid);
+    const endSearch = length > 0 && (right <= newLeft);
+    return endSearch;
   };
 
   const handleUpdateRight = () => {
-    setRight(() => {
-      const right = mid - 1;
-      setMid(() => Math.floor((left + right) / 2));
-      return right;
-    });
-    return showOptions2;
+    const newRight = mid - 1;
+    const newMid = Math.floor((left + newRight) / 2);
+    setRight(newRight);
+    setMid(newMid);
+    const endSearch = length > 0 && (newRight <= left);
+    return endSearch;
   };
-
-  return { handleUpdateLeft, handleUpdateRight, showOptions2, mid };
+  const endSearch = length > 0 && (right <= left)
+  console.log("NEW MID: " + mid);
+  return { handleUpdateLeft, handleUpdateRight, endSearch, mid };
 };
+
 
 export default function AddNewEventPopup({
   id,
@@ -50,9 +50,11 @@ export default function AddNewEventPopup({
   const [description, setDescription] = useState("");
   const [showSubmit, setShowSubmit] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
-  const { handleUpdateLeft, handleUpdateRight, showOptions2, mid } =
-    useBinarySearch(eventsState.length);
-
+  const { handleUpdateLeft, handleUpdateRight, endSearch, mid} = useBinarySearch(eventsState.length);
+  console.log(eventsState)
+  console.log("Submit button is" + showSubmit)
+  console.log("mid is" + mid)
+  console.log("Show options2 is" + endSearch)
   const handleOnNext = () => {
     if (eventsState.length === 0) {
       setShowSubmit(true);
@@ -80,20 +82,33 @@ export default function AddNewEventPopup({
   };
 
   const handleLeftClick = async () => {
-    const showOptions2 = handleUpdateLeft();
-    if (showOptions2) {
+    const endSearch = handleUpdateLeft();
+    console.log(" LEFT SHOW OPTIONS2" + endSearch)
+    if(endSearch) {
       await handleSubmitEvent();
       onClose();
     }
   };
 
   const handleRightClick = async () => {
-    const showOptions2 = handleUpdateRight();
-    if (showOptions2) {
+    const endSearch = handleUpdateRight();
+    console.log("RIGHT SHOW OPTIONS2" + endSearch)
+    if(endSearch) {
       await handleSubmitEvent();
       onClose();
     }
   };
+
+  // useEffect(() => {
+  //   if (endSearch) {
+  //     console.log("In use effect and updating state" + mid)
+  //     const newRank = mid + 1;
+  //     setEventsState([...eventsState, { id: -1, name: name, description: description, image: "", rank: newRank, type: rating }]);
+
+  //     onClose();
+  //   }
+  // }, [endSearch])
+
 
   return (
     <div className="relative w-full max-w-lg border border-black p-8 bg-white">
@@ -159,9 +174,7 @@ export default function AddNewEventPopup({
           color="#D05858"
         />
       </div>
-
-      {/* Ranking choices */}
-      {showOptions && !showOptions2 && (
+      {showOptions && !endSearch && ( // add another variable here pass in upper or lower
         <>
           <p className="text-black mb-3">Which one is better? Choose wisely!</p>
           <div className="flex space-x-4 mb-8 justify-center">
