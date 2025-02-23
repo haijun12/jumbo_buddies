@@ -16,6 +16,7 @@ const useBinarySearch = (length: number) => {
   const [mid, setMid] = useState(Math.floor(length / 2));
   // 
   const handleUpdateLeft = () => {
+    console.log("update left, previous left and mid: " + left + " " + mid)
     const newLeft = mid + 1;
     const newMid = Math.floor((newLeft + right) / 2);
     console.log("Update left", newLeft, newMid)
@@ -26,15 +27,17 @@ const useBinarySearch = (length: number) => {
   };
   // 
   const handleUpdateRight = () => {
+    console.log("update right, previous right and mid: " + right + " " + mid)
     const newRight = mid - 1;
     const newMid = Math.floor((left + newRight) / 2);
+    console.log("Update right", newRight, newMid)
     setRight(newRight);
     setMid(newMid);
     const endSearch = length > 0 && (newRight <= left);
     return endSearch;
   };
   const endSearch = length > 0 && (right <= left)
-  console.log("NEW MID: " + mid);
+  // console.log("NEW MID: " + mid);
   return { handleUpdateLeft, handleUpdateRight, endSearch, mid };
 };
 
@@ -49,9 +52,10 @@ export default function AddNewEventPopup({
   const [description, setDescription] = useState("");
   const [showSubmit, setShowSubmit] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  console.log(eventsState)
   const { handleUpdateLeft, handleUpdateRight, endSearch, mid} = useBinarySearch(eventsState.length);
-  console.log("Submit button is" + showSubmit)
-  console.log("mid is" + mid)
+  // console.log("Submit button is" + showSubmit)
+  // console.log("mid is" + mid)
   // console.log("Show options2 is" + endSearch)
   const handleOnNext = () => {
     if (eventsState.length === 0) {
@@ -63,12 +67,12 @@ export default function AddNewEventPopup({
 
   const handleFirstSubmit = async () => {
     onClose();
-    await handleSubmitEvent();
+    await handleSubmitEvent(mid);
   };
 
-  const handleSubmitEvent = async () => {
-    const newRank = mid + 1;
-    console.log("NEW RANK" +newRank)
+  const handleSubmitEvent = async (newRank: number) => {
+    newRank = newRank + 1;
+    console.log("NEW RANK" + newRank)
     await addRankedEvent(id, name, description, "", rating, newRank);
   };
 
@@ -76,7 +80,7 @@ export default function AddNewEventPopup({
     const endSearch = handleUpdateLeft();
     // console.log(" LEFT SHOW OPTIONS2" + endSearch)
     if(endSearch) {
-      await handleSubmitEvent();
+      await handleSubmitEvent(mid + 1);
       onClose();
     }
   };
@@ -85,7 +89,7 @@ export default function AddNewEventPopup({
     const endSearch = handleUpdateRight();
     // console.log("RIGHT SHOW OPTIONS2" + endSearch)
     if(endSearch) {
-      await handleSubmitEvent();
+      await handleSubmitEvent(mid + 1);
       onClose();
     }
   };

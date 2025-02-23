@@ -13,7 +13,8 @@ export default function Card({ id, listName, events }: { id: number; listName: s
   // console.log(events)
 
   // Create a sorted copy of events based on rank.
-  const sortedEvents = [...events].sort((a, b) => a.rank - b.rank);
+  const sortedEvents = [...events].sort((a, b) => b.rank - a.rank);
+  const sortedEvents1 = [...events].sort((a, b) => a.rank - b.rank);
   console.log(sortedEvents)
   const handleDeleteEvent = async (itemName: string) => {
     try {
@@ -81,7 +82,7 @@ export default function Card({ id, listName, events }: { id: number; listName: s
           <AddNewEventPopup
             id={id}
             onClose={() => setShowAddNewEvent(false)}
-            eventsState={sortedEvents}
+            eventsState={sortedEvents1}
           />
           {/* Decorative Images */}
           <Image
