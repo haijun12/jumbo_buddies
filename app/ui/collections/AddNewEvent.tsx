@@ -8,7 +8,6 @@ type AddNewEventPopupProps = {
   id: number;
   onClose: () => void;
   eventsState: Event[];
-  setEventsState: React.Dispatch<React.SetStateAction<Event[]>>;
 };
 
 const useBinarySearch = (length: number) => {
@@ -43,7 +42,6 @@ export default function AddNewEventPopup({
   id,
   onClose,
   eventsState,
-  setEventsState,
 }: AddNewEventPopupProps) {
   const [rating, setRating] = useState("");
   const [name, setName] = useState("");
@@ -64,19 +62,11 @@ export default function AddNewEventPopup({
 
   const handleFirstSubmit = async () => {
     onClose();
-    setEventsState([
-      ...eventsState,
-      { id: -1, name, description, image: "", rank: 1, type: rating },
-    ]);
     await handleSubmitEvent();
   };
 
   const handleSubmitEvent = async () => {
     const newRank = mid + 1;
-    setEventsState([
-      ...eventsState,
-      { id: -1, name, description, image: "", rank: newRank, type: rating },
-    ]);
     await addRankedEvent(id, name, description, "", rating, newRank);
   };
 

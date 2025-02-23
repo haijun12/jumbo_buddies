@@ -3,7 +3,6 @@ import { usePathname } from "next/navigation";
 import styles from './nav.module.css';
 import Link from "next/link";
 import Image from "next/image";
-import path from "path";
 
 export default function Navbar() {
     const pathname = usePathname(); // Get the current route

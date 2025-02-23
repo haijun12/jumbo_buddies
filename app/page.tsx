@@ -40,13 +40,13 @@ export default function Home() {
         {/* Subheading (absolute, a bit lower) */}
         <div className="absolute top-[57%] w-full text-center left-1/2 -translate-x-1/2 px-4">
           <p className="text-lg italic">
-            Are you ready to rate everything & anything that <br/>you've ever done, 
+            Are you ready to rate everything & anything that <br/>you&apos;ve ever done, 
             eaten, seen, read, and more?
           </p>
         </div>
 
         {/* START Button (absolute, near bottom to align with wax seal) */}
-        <div className="absolute bottom-[25%] left-[40%] w-full text-center left-1/2 -translate-x-1/2">
+        <div className="absolute bottom-[25%] w-full text-center left-1/2 -translate-x-1/2">
           <Link href="/collections" className="bg-black text-white px-11 py-7 rounded text-2xl">
             START
           </Link>

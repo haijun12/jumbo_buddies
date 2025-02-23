@@ -1,7 +1,7 @@
 "use server";
 import { neon } from '@neondatabase/serverless';
 import { getClerkUserId } from "./auth";
-import {GetUserCollectionResponse, ListCollectionItem, RatingList} from "./types";
+import {GetUserCollectionResponse, ListCollectionItem} from "./types";
 import { Event } from "./types";
 import { revalidatePath } from 'next/cache';
 

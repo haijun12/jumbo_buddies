@@ -11,7 +11,6 @@ export default function Card({ id, listName, events }: { id: number; listName: s
   const router = useRouter();
   const [showAddNewEvent, setShowAddNewEvent] = useState(false);
   // console.log(events)
-  const [eventsState, setEventsState] = useState<Event[]>(events || []);
 
   // Create a sorted copy of events based on rank.
   const sortedEvents = [...events].sort((a, b) => a.rank - b.rank);
@@ -19,7 +18,6 @@ export default function Card({ id, listName, events }: { id: number; listName: s
   const handleDeleteEvent = async (itemName: string) => {
     try {
       await deleteItem(itemName, id);
-      setEventsState((prev) => prev.filter((ev) => ev.name !== itemName));
     } catch (err) {
       console.error("Failed to delete event:", err);
     }
@@ -84,7 +82,6 @@ export default function Card({ id, listName, events }: { id: number; listName: s
             id={id}
             onClose={() => setShowAddNewEvent(false)}
             eventsState={sortedEvents}
-            setEventsState={setEventsState}
           />
           {/* Decorative Images */}
           <Image
