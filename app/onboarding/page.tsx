@@ -9,5 +9,5 @@ export default async function OnboardPage() {
       redirect("/sign-in");
     }
     await createUser();
-    redirect("/create");
+    redirect("/collections");
   }

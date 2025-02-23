@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import TextField from '@mui/material/TextField';
-import { createRatingList } from '@/app/lib/api';
+import { createUserList } from "../lib/db_functions";
 import { useRouter } from "next/navigation";
 
 
@@ -16,8 +16,9 @@ export default function Create() {
   };
 
   const handleOnNext = async () => {
-    const id = await createRatingList(name);
-    router.push("/lists/" + id);
+    const id = await createUserList(name);
+    console.log("Created list with id and name: ", id, name);
+    router.push("/collections/" + id);
   }
 
   return (

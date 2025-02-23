@@ -141,10 +141,12 @@ export async function createUserList(listName: string) {
     await ensureTables();
       const userId = await getClerkUserId();
 
-      await sql`
+      const createUserListResult = await sql`
           INSERT INTO Users.Lists (name, create_date, update_date, user_id)
-          VALUES (${listName}, NOW(), NOW(), ${userId});
+          VALUES (${listName}, NOW(), NOW(), ${userId})
+          RETURNING id;
       `;
+      return createUserListResult[0].id;
   } catch (error) {
       console.error("Error creating list:", error);
       throw error;
