@@ -34,6 +34,7 @@ export default function Create() {
           <TextField
             placeholder="Name the list"
             value={name} 
+            onFocus={handleFocus}
             onChange={(e) => setName(e.target.value)}
             sx={{
               '& .MuiOutlinedInput-root': {
@@ -45,7 +46,7 @@ export default function Create() {
             }}
           />
 
-          <button className="h-[60px] my-[20px] p-[20px] bg-black text-white">
+          <button onClick={handleOnNext} className="h-[60px] my-[20px] p-[20px] bg-black text-white">
             CREATE
           </button>
         </div>
