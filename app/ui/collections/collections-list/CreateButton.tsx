@@ -31,7 +31,7 @@ export function CreateButton() {
             setError("");
           }}
           error={Boolean(error)}
-          helperText={error}
+          // Remove helperText so no error message is displayed
           sx={{
             "& .MuiOutlinedInput-root": {
               borderRadius: 0,
