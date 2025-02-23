@@ -69,7 +69,7 @@ export default function AddNewEventPopup({
   const handleSubmitEvent = async () => {
     const newRank = mid + 1;
     console.log("NEW RANK" +newRank)
-    // await addRankedEvent(id, name, description, "", rating, newRank);
+    await addRankedEvent(id, name, description, "", rating, newRank);
   };
 
   const handleLeftClick = async () => {
