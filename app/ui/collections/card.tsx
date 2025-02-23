@@ -30,8 +30,8 @@ export default function Card({ id, listName, events }: { id: number, listName: s
             />
           ))
         ) : (
-          <p className="text-2xl text-center">
-            Click ADD to start ranking!
+          <p className="text-[32px] text-[#676767] italic text-center">
+            Off with the emptiness! Add something now!
           </p>
         )}
       </div>

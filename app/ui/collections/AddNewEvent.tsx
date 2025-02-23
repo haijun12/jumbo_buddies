@@ -147,7 +147,7 @@ export default function AddNewEventPopup({ id,onClose, eventsState, setEventsSta
       </div>
       {showOptions && !showOptions2 && ( // add another variable here pass in upper or lower
         <>
-        <p className="text-black mb-3">This way or that way? Choose wisely!</p>
+        <p className="text-black mb-3">Which one is better? Choose wisely!</p>
         <div className="flex space-x-4 mb-8 justify-center">
           <button className="w-[200px] text-black h-[150px] border border-black flex items-center justify-center" onClick={handleLeftClick}> 
             {name} 
