@@ -3,95 +3,116 @@ import { TextField } from "@mui/material";
 import { Check } from "lucide-react";
 import { Event } from "@/app/lib/types";
 import { addRankedEvent } from "@/app/lib/db_functions";
+import { start } from "repl";
+import { Events } from "@neondatabase/serverless";
 
 type AddNewEventPopupProps = {
   id: number;
   onClose: () => void;
   eventsState: Event[];
+  setEventsState: React.Dispatch<React.SetStateAction<Event[]>>;
 };
 
-const useBinarySearch = (length: number) => {
-  const [left, setLeft] = useState(0);
-  const [right, setRight] = useState(length);
-  const [mid, setMid] = useState(Math.floor(length / 2));
-  // 
-  const handleUpdateLeft = () => {
-    console.log("update left, previous left and mid: " + left + " " + mid)
-    const newLeft = mid + 1;
-    const newMid = Math.floor((newLeft + right) / 2);
-    console.log("Update left", newLeft, newMid)
-    setLeft(newLeft);
-    setMid(newMid);
-    const endSearch = length > 0 && (right <= newLeft);
-    return endSearch;
-  };
-  // 
-  const handleUpdateRight = () => {
-    console.log("update right, previous right and mid: " + right + " " + mid)
-    const newRight = mid - 1;
-    const newMid = Math.floor((left + newRight) / 2);
-    console.log("Update right", newRight, newMid)
-    setRight(newRight);
-    setMid(newMid);
-    const endSearch = length > 0 && (newRight <= left);
-    return endSearch;
-  };
-  const endSearch = length > 0 && (right <= left)
-  // console.log("NEW MID: " + mid);
-  return { handleUpdateLeft, handleUpdateRight, endSearch, mid };
-};
+// const useBinarySearch = (length: number) => {
+//   const [left, setLeft] = useState(0);
+//   const [right, setRight] = useState(length);
+//   const [mid, setMid] = useState(Math.floor(length / 2));
+//   // 
+//   const handleUpdateLeft = () => {
+//     console.log("update left, previous left and mid: " + left + " " + mid)
+//     const newLeft = mid + 1;
+//     const newMid = Math.floor((newLeft + right) / 2);
+//     console.log("Update left", newLeft, newMid)
+//     setLeft(newLeft);
+//     setMid(newMid);
+//     const endSearch = length > 0 && (right <= newLeft);
+//     return { endSearch, newMid };
+//   };
+//   // 
+//   const handleUpdateRight = () => {
+//     console.log("update right, previous right and mid: " + right + " " + mid)
+//     const newRight = mid - 1;
+//     const newMid = Math.floor((left + newRight) / 2);
+//     console.log("Update right", newRight, newMid)
+//     setRight(newRight);
+//     setMid(newMid);
+//     const endSearch = length > 0 && (newRight <= left);
+//     return { endSearch, newMid };
+//   };
+//   const endSearch = length > 0 && (right <= left)
+//   // console.log("NEW MID: " + mid);
+//   return { handleUpdateLeft, handleUpdateRight, endSearch, mid };
+// };
 
 
 export default function AddNewEventPopup({
   id,
   onClose,
   eventsState,
+  setEventsState,
 }: AddNewEventPopupProps) {
   const [rating, setRating] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [showSubmit, setShowSubmit] = useState(false);
-  const [showOptions, setShowOptions] = useState(false);
   console.log(eventsState)
-  const { handleUpdateLeft, handleUpdateRight, endSearch, mid} = useBinarySearch(eventsState.length);
+  // const { handleUpdateLeft, handleUpdateRight, endSearch, mid} = useBinarySearch(eventsState.length);
   // console.log("Submit button is" + showSubmit)
   // console.log("mid is" + mid)
   // console.log("Show options2 is" + endSearch)
-  const handleOnNext = () => {
-    if (eventsState.length === 0) {
-      setShowSubmit(true);
-    } else {
-      setShowOptions(true);
-    }
-  };
 
+  const [isComparing, setIsComparing] = useState(false);
+  const [left, setLeft] = useState(0);
+  const [right, setRight] = useState(0);
+  const [mid, setMid] = useState(0);
+  // const [currentComparison, setCurrentComparison] = useState(0);
   const handleFirstSubmit = async () => {
+    await handleSubmitEvent(0)
+    setEventsState([{ id: 0, name: name, description: description, rank: 0, type: "Good" }]);
     onClose();
-    await handleSubmitEvent(mid);
-  };
+  }
+  const startComparison = () => {
+    if (eventsState.length === 0) {
+      return;
+    }
+    setIsComparing(true);
+    setLeft(0);
+    setRight(eventsState.length - 1);
+    setMid(Math.floor((0 + eventsState.length - 1) / 2));
+    // setCurrentComparison(Math.floor((0 + eventsState.length - 1) / 2));
+  }
+  const handleComparison = async (isBetter : boolean) => {
+    let newLeft = left;
+    let newRight = right;
+    let newMid;
+    if (isBetter) {
+      newRight = mid - 1;
+    } else {
+      newLeft = mid + 1;
+    }
+    newMid = Math.floor((newLeft + newRight) / 2);
+    if (newLeft > newRight) {
+      console.log(newLeft);
+      await handleSubmitEvent(newLeft);
+      const newRankedItems = [...eventsState];
+      newRankedItems.splice(newLeft, 0, { id: newLeft, name: name, description: description, rank: newLeft, type: "Good" });
+      for (let i = newLeft + 1; i < newRankedItems.length; i++) {
+        newRankedItems[i].rank = i;
+        newRankedItems[i].id = i;
+      }
+      setEventsState(newRankedItems);
+      console.log(newRankedItems)
+      setIsComparing(false);
+      onClose();
+    }
+    setLeft(newLeft);
+    setRight(newRight);
+    setMid(newMid);
+  }
+
 
   const handleSubmitEvent = async (newRank: number) => {
-    newRank = newRank + 1;
     console.log("NEW RANK" + newRank)
     await addRankedEvent(id, name, description, "", rating, newRank);
-  };
-
-  const handleLeftClick = async () => {
-    const endSearch = handleUpdateLeft();
-    // console.log(" LEFT SHOW OPTIONS2" + endSearch)
-    if(endSearch) {
-      await handleSubmitEvent(mid + 1);
-      onClose();
-    }
-  };
-
-  const handleRightClick = async () => {
-    const endSearch = handleUpdateRight();
-    // console.log("RIGHT SHOW OPTIONS2" + endSearch)
-    if(endSearch) {
-      await handleSubmitEvent(mid + 1);
-      onClose();
-    }
   };
 
   return (
@@ -134,7 +155,7 @@ export default function AddNewEventPopup({
       <p className="text-black mb-3">What did you think?</p>
       <div
         className="flex items-end space-x-8 mb-8 justify-center"
-        onClick={handleOnNext}
+        onClick={startComparison}
       >
         <RatingButton
           value="Good"
@@ -158,19 +179,19 @@ export default function AddNewEventPopup({
           color="#D05858"
         />
       </div>
-      {showOptions && !endSearch && ( // add another variable here pass in upper or lower
+      {isComparing && ( // add another variable here pass in upper or lower
         <>
           <p className="text-black mb-3">Which one is better? Choose wisely!</p>
           <div className="flex space-x-4 mb-8 justify-center">
             <button
               className="w-[200px] text-black h-[150px] border border-black flex items-center justify-center"
-              onClick={handleLeftClick}
+              onClick={() => handleComparison(true)}
             >
               {name}
             </button>
             <button
               className="w-[200px] text-black h-[150px] border border-black flex items-center justify-center"
-              onClick={handleRightClick}
+              onClick={() => handleComparison(false)}
             >
               {eventsState[mid]?.name}
             </button>
@@ -179,7 +200,7 @@ export default function AddNewEventPopup({
       )}
 
       {/* Submit or End Voting */}
-      {showSubmit ? (
+      {eventsState.length === 0 ? (
         <div className="flex flex-row items-center justify-center gap-4">
           <div className="text-black italic text-center">
             No nonsense here—let&apos;s get started!

@@ -10,11 +10,11 @@ import { deleteItem, deleteList } from "@/app/lib/api"; // import both
 export default function Card({ id, listName, events }: { id: number; listName: string; events: Event[] }) {
   const router = useRouter();
   const [showAddNewEvent, setShowAddNewEvent] = useState(false);
+  const [eventsState, setEventsState] = useState(events);
   // console.log(events)
 
   // Create a sorted copy of events based on rank.
-  const sortedEvents = [...events].sort((a, b) => b.rank - a.rank);
-  const sortedEvents1 = [...events].sort((a, b) => a.rank - b.rank);
+  const sortedEvents = [...events].sort((a, b) => a.rank - b.rank);
   console.log(sortedEvents)
   const handleDeleteEvent = async (itemName: string) => {
     try {
@@ -42,8 +42,8 @@ export default function Card({ id, listName, events }: { id: number; listName: s
       </h1>
 
       <div className="space-y-5">
-        {sortedEvents.length > 0 ? (
-          sortedEvents.map((event, index) => (
+        {eventsState.length > 0 ? (
+          eventsState.map((event, index) => (
             <EventCard
               key={event.id || event.rank}
               event={{ ...event, overallRank: index + 1 }}
@@ -82,7 +82,8 @@ export default function Card({ id, listName, events }: { id: number; listName: s
           <AddNewEventPopup
             id={id}
             onClose={() => setShowAddNewEvent(false)}
-            eventsState={sortedEvents1}
+            eventsState={eventsState}
+            setEventsState={setEventsState}
           />
           {/* Decorative Images */}
           <Image
