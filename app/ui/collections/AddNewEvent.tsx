@@ -3,8 +3,8 @@ import { TextField } from "@mui/material";
 import { Check } from "lucide-react";
 import { Event } from "@/app/lib/types";
 import { addRankedEvent } from "@/app/lib/db_functions";
-import { start } from "repl";
-import { Events } from "@neondatabase/serverless";
+// import { start } from "repl";
+// import { Events } from "@neondatabase/serverless";
 
 type AddNewEventPopupProps = {
   id: number;
@@ -82,14 +82,13 @@ export default function AddNewEventPopup({
   }
   const handleComparison = async (isBetter : boolean) => {
     let newLeft = left;
-    let newRight = right;
-    let newMid;
+    let newRight = right; 
     if (isBetter) {
       newRight = mid - 1;
     } else {
       newLeft = mid + 1;
     }
-    newMid = Math.floor((newLeft + newRight) / 2);
+    const newMid = Math.floor((newLeft + newRight) / 2);
     if (newLeft > newRight) {
       console.log(newLeft);
       await handleSubmitEvent(newLeft);
